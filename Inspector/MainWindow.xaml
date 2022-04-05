@@ -1,0 +1,68 @@
+﻿<Window x:Class="Inspector.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Inspector"
+        mc:Ignorable="d"
+        Title="Автоматизированный учёт компьютерной техники" Height="700" Width="1555" Icon="/Icon/cpu.png" WindowStartupLocation="CenterScreen">
+    <Grid Background="WhiteSmoke">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="295"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="65"/>
+            <RowDefinition/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="25"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
+            <Image Source="Icon/Orsk.png" VerticalAlignment="Bottom" Height="45" Width="45"/>
+            <Label HorizontalAlignment="Center" VerticalAlignment="Bottom" Content="Администрация г. Орска" FontFamily="Elephant" FontSize="20" FontWeight="Medium"/>
+        </StackPanel>
+        <StackPanel Grid.RowSpan="4" Grid.Row="2"/>
+        <Menu VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="2">
+            <MenuItem Click="WarehouseOpen" Header="Склад" />
+            <MenuItem Header="Материальная ответственность"/>
+            <MenuItem Header="Сотрудники"/>
+            <MenuItem Header="Справочники"/>
+            <MenuItem Header="Отчёты"/>
+            <MenuItem Header="Выход" Click="ExitMenu_Click" />
+        </Menu>
+        <StackPanel Grid.Row="1" Background="WhiteSmoke">
+            <Button Content="Склад" Click="WarehouseOpen"/>
+            <Button Content="Материальная ответственность" Click="MaterialLiabilityOpen"/>
+            <Button Content="Сотрудники" Click="EmployeesOpen"/>
+            <Button Content="Справочники" Click="SpravsClick"/>
+        </StackPanel>
+        <Frame Grid.RowSpan="3" Grid.Row="1" Grid.Column="1" Background="WhiteSmoke" Name="MainFrame"/>
+        <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
+            <TextBlock VerticalAlignment="Center">
+                <Hyperlink Name="lnkImgTLG" NavigateUri="https://t.me/admorsk" TextDecorations="None">
+                    <Image x:Name="telegram" Source="Icon/telegram.png" Width="33" Height="33" Margin="5" ToolTip="Перейти в наш телеграмм канал" MouseEnter="Image_MouseEnter" MouseLeave="telegram_MouseLeave"/>
+                </Hyperlink>
+            </TextBlock>
+            <TextBlock VerticalAlignment="Center">
+                <Hyperlink Name="lnkImgVK" NavigateUri="https://vk.com/orsk_adm" TextDecorations="None">
+                    <Image x:Name="vk" Source="Icon/vk.png" Width="33" Height="33" ToolTip="Посетить нашу группу Одноклассники" MouseEnter="vk_MouseEnter" MouseLeave="vk_MouseLeave"/>
+                </Hyperlink>
+            </TextBlock>
+            <TextBlock VerticalAlignment="Center">
+                <Hyperlink Name="lnkImgOK" NavigateUri="https://ok.ru/group/55276631490681" TextDecorations="None">
+                    <Image x:Name="ok" Source="Icon/ok.png" Width="33" Height="33" ToolTip="Посетить нашу группу ВКонтакте" MouseEnter="ok_MouseEnter" MouseLeave="ok_MouseLeave"/>
+                </Hyperlink>
+            </TextBlock>
+        </StackPanel>
+        <StackPanel Grid.Row="2">
+            <Label Content="Официальный портал: " FontFamily="Microsoft JhengHei" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </StackPanel>
+        <StackPanel Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock>
+                <Hyperlink Name="lnkToWebSite" NavigateUri="http://orsk-adm.ru/" TextDecorations="None">
+                    <Label x:Name="WebSite" Content="http://orsk-adm.ru/" FontFamily="Microsoft JhengHei" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" MouseEnter="WebSite_MouseEnter" MouseLeave="WebSite_MouseLeave"/>
+                </Hyperlink>
+            </TextBlock>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,53 @@
+﻿<Page x:Class="Inspector.Pages.MaterialLiability"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Inspector.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="MaterialLiability">
+
+    <Grid Background="AliceBlue">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Menu VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="2">
+            <MenuItem Header="Действия">
+                <MenuItem Header="Правка">
+                    <MenuItem Header="Добавление записи" Click="ActivateGroupBoxAdd_Click"/>
+                    <MenuItem Header="Редактирование записи" Click="ActivateGroupBoxEdit_Click"/>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="Поиск" Click="ActivateSearch_Click"/>
+            <MenuItem Header="Экспорт в Excel" Click="Export_Click"/>
+        </Menu>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="2" x:Name="CompactFiltering" Visibility="Visible">
+            <Label Content="Название техники: " FontSize="14" ToolTip="Впишите в текстовое поле название техники, чтобы выполнить фильтрацию"/>
+            <TextBox x:Name="txbSearch" Width="105" Height="25" TextChanged="txbSearch_TextChanged"/>
+            <Label Content="Сотрудник: " FontSize="14" ToolTip="Выберите сотрудника из списка, для просмотра закрепленной за ним техники."/>
+            <ComboBox x:Name="cmbSearch" Width="105" Height="25" SelectionChanged="cmbSearch_SelectionChanged" SelectedValue="{Binding Path=MyResponsobility.Код_сотр}"/>
+            <Button Height="25" Width="55" VerticalAlignment="Center" Margin="5 0 0 0" Content="Отмена" Click="CancelSearch_Click"/>
+        </StackPanel>
+        <CheckBox Grid.ColumnSpan="2" Grid.Row="1" x:Name="CheckedRunning" VerticalAlignment="Center" HorizontalAlignment="Right" 
+                  Content="Эксплуатация" Margin="0 0 435 0" IsChecked="False" Width="100" Click="CheckRunning_Click"/>
+        <DataGrid Name="ResponsobilityGrid" CanUserAddRows="False" IsReadOnly="False"
+                  SelectionMode="Single" AutoGenerateColumns="False" Grid.Row="2"
+                  Grid.ColumnSpan="3" RowBackground="Beige" AlternatingRowBackground="DarkSeaGreen" VirtualizingPanel.IsVirtualizing="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Код" Binding="{Binding ID}" Width="50"/>
+                <DataGridTextColumn Header="Техника" Binding="{Binding Техника.Название}" Width="90"/>
+                <DataGridTextColumn Header="ФИО Cотрудника" Binding="{Binding Сотрудник.ФИО_сотр}" Width="155"/>
+                <DataGridTextColumn Header="Дата выдачи" Binding="{Binding Дата_выдачи, StringFormat={}{0:dd.MM.yyyy}}" Width="200"/>
+                <DataGridTextColumn Header="Дата окончания" Binding="{Binding Дата_окончания, StringFormat={}{0:dd.MM.yyyy}}" Width="200"/>
+                <DataGridTextColumn Header="Эксплуатация" Binding="{Binding Эксплуатация}" Width="100"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Page>

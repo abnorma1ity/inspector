@@ -1,0 +1,39 @@
+﻿<Page x:Class="Inspector.Pages.AddMaterialLiabilityPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Inspector.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="AddMaterialLiabilityPage">
+
+    <Grid Background="Beige">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2">
+            <Label Content="Техника" FontWeight="DemiBold" FontFamily="Times New Roman" FontSize="24"/>
+            <StackPanel Orientation="Horizontal">
+                <ComboBox x:Name="combotype" ItemsSource="{Binding}"  SelectedValuePath="Код" DisplayMemberPath="Название" Width="450" Height="25" SelectionChanged="combotype_SelectionChanged"/>
+                <TextBlock Margin="10 0 0 0 " x:Name="info" Height="25" TextWrapping="Wrap" Text="****" FontWeight="DemiBold" FontFamily="Times New Roman" FontSize="24"/>
+            </StackPanel>
+            <Label Content="Сотрудник" FontWeight="DemiBold" FontFamily="Times New Roman" FontSize="24"/>
+            <ComboBox x:Name="Sotr" SelectedValue="{Binding Path=MyResponsobility.Код_сотр}"/>
+            <Label Content="Дата выдачи"  FontWeight="DemiBold" FontFamily="Times New Roman" FontSize="24"/>
+            <DatePicker Text="{Binding MyResponsobility.Дата_выдачи, StringFormat={}{0:dd.MM.yyyy}}" x:Name="date1" SelectedDateChanged="DatePicker_SelectedDateChanged"/>
+            <Label Content="Дата окончания"  FontWeight="DemiBold" FontFamily="Times New Roman" FontSize="24"/>
+            <DatePicker Text="{Binding MyResponsobility.Дата_окончания, StringFormat={}{0:dd.MM.yyyy}}" x:Name="date2" SelectedDateChanged="date2_SelectedDateChanged"/>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Эксплуатация" FontWeight="DemiBold" FontFamily="Times New Roman" FontSize="24"/>
+                <CheckBox x:Name="CheckRunning" HorizontalAlignment="Center" Margin="0 13.5 0 0"/>
+            </StackPanel>
+            <Button Content="Сохранить" Click="Button_Click"/>
+        </StackPanel>
+    </Grid>
+</Page>
