@@ -22,51 +22,30 @@ namespace Inspector.Pages
     /// </summary>
     public partial class MaterialLiability : Page
     {
-        public MaterialLiabilityViewModel ViewModel { get; } = new MaterialLiabilityViewModel();
+        public MaterialLiabilityVM ViewModel { get; } = new MaterialLiabilityVM();
+
+
+        private readonly CollectionViewSource filteremployee;
+
         public List<Сотрудник> Employeelist;
-        public List<Сотрудник> Employeeslist;
-        public List<Техника> Techlist;
         public MaterialLiability()
         {
             InitializeComponent();
-            List<Выдача> equipments;
-            using (dbMalukovEntities db = new dbMalukovEntities())
-            {
-                equipments = db.Выдача.ToList();
-                Employeelist = db.Сотрудник.OrderBy(f => f.ФИО_сотр).ToList();
-                Employeelist.Insert(0, new Сотрудник
-                {
-                    ФИО_сотр = "Все сотрудники"
-                });
-                cmbSearch.ItemsSource = Employeelist;
-                cmbSearch.DisplayMemberPath = "ФИО_сотр";
-                cmbSearch.SelectedValuePath = "Код_сотр";
 
-                Techcmb.ItemsSource = Techlist;
-                Techcmb.DisplayMemberPath = "Название";
-                Techcmb.SelectedValuePath = "Код_техники";
-
-                Employeecmb.ItemsSource = Employeeslist;
-                Employeecmb.DisplayMemberPath = "ФИО_сотр";
-                Employeecmb.SelectedValuePath = "Код_сотр";
-            }
-            foreach (var item in equipments)
-            {
-                ViewModel.Equipments.Add(item);
-            }
-
+            ViewModel = (MaterialLiabilityVM)Resources["vm"];
+            filteremployee = (CollectionViewSource)Resources["filteremployee"];
         }
         private void ActivateGroupBoxAdd_Click(object sender, RoutedEventArgs e) // добавление
         {
             ViewModel.Mode = ViewMode.Add;
             BtnMode.Content = "Добавить";
-            ViewModel.EditableEquipment = new Выдача();
+            ViewModel.РедактируемаяВыдача = new Выдача();
         }
         private void ActivateGroupBoxEdit_Click(object sender, RoutedEventArgs e) // редактирование
         {
             ViewModel.Mode = ViewMode.Edit;
             BtnMode.Content = "Редактировать";
-            ViewModel.EditableEquipment = new Выдача()
+            ViewModel.РедактируемаяВыдача = new Выдача()
             {
                 Код_сотр = ViewModel.SelectedEquipment.Код_сотр,
                 Код_техники = ViewModel.SelectedEquipment.Код_техники,
@@ -74,6 +53,8 @@ namespace Inspector.Pages
                 Дата_окончания = ViewModel.SelectedEquipment.Дата_окончания,
                 Эксплуатация = ViewModel.SelectedEquipment.Эксплуатация,
                 ID = ViewModel.SelectedEquipment.ID,
+                Сотрудник = ViewModel.SelectedEquipment.Сотрудник,
+                Техника = ViewModel.SelectedEquipment.Техника
                 //Выдача = ViewModel.SelectedEquipment.Выдача
             };
         }
@@ -106,32 +87,32 @@ namespace Inspector.Pages
                 }
 
         }
-        private void Update()
-        {
-            try
-            {
-                var db = new dbMalukovEntities();
-                var us = db.Выдача.ToList();
-                var sotr = (cmbSearch.SelectedItem as Сотрудник).Код_сотр;
-                if (cmbSearch.SelectedIndex != 0)
-                {
-                    us = us.Where(f => f.Код_сотр == sotr).ToList(); // фильтр по фамилиям сотрудников
-                }
-                if (CheckedRunning.IsChecked == true)
-                {
-                    us = us.Where(f => f.Эксплуатация == true).ToList(); // фильтр по эксплуатации
-                }
-                if (txbSearch.Text.Length > 0)
-                {
-                    us = us.Where(find => find.Техника.Название.Contains(txbSearch.Text)).ToList(); // фильтр по эксплуатации
-                }
-                ResponsobilityGrid.ItemsSource = us.ToList();
-            }
-            catch
-            {
-                MessageBox.Show("Одно из полей поиска не заполнено");
-            }
-        }
+        //private void Update()
+        //{
+        //    try
+        //    {
+        //        var db = new dbMalukovEntities();
+        //        var us = db.Выдача.ToList();
+        //        var sotr = (cmbSearch.SelectedItem as Сотрудник).Код_сотр;
+        //        if (cmbSearch.SelectedIndex != 0)
+        //        {
+        //            us = us.Where(f => f.Код_сотр == sotr).ToList(); // фильтр по фамилиям сотрудников
+        //        }
+        //        if (ViewModel.ЕслиЭксплуатация)
+        //        {
+        //            us = us.Where(f => f.Эксплуатация == true).ToList(); // фильтр по эксплуатации
+        //        }
+        //        if (txbSearch.Text.Length > 0)
+        //        {
+        //            us = us.Where(find => find.Техника.Название.Contains(txbSearch.Text)).ToList(); // фильтр по эксплуатации
+        //        }
+        //        filteremployee?.View.Refresh();
+        //    }
+        //    catch
+        //    {
+        //        MessageBox.Show("Одно из полей поиска не заполнено");
+        //    }
+        //}
         private void ResetOut()
         {
             CheckedRunning.IsChecked = false;
@@ -141,67 +122,99 @@ namespace Inspector.Pages
 
         private void txbSearch_TextChanged(object sender, TextChangedEventArgs e) // поиск по названию
         {
-            if (txbSearch.Text.Length > 0)
-            {
-                Update();
-            }
-            else
-            {
-                ResetOut();
-            }
+
+
+            filteremployee?.View.Refresh();
+            //if (txbSearch.Text.Length > 0)
+            //{
+            //    Update();
+            //}
+            //else
+            //{
+            //    ResetOut();
+            //}
         }
         private void CheckRunning_Click(object sender, RoutedEventArgs e) // клик по чекбоксу Эксплуатация
         {
-            Update();
+            filteremployee?.View.Refresh();
         }
         private void cmbSearch_SelectionChanged(object sender, SelectionChangedEventArgs e) // фильтр по сотруднику
         {
-            Update();
+            filteremployee?.View.Refresh();
         }
 
         private void BtnMode_Click(object sender, RoutedEventArgs e)
         {
             if (ViewModel.Mode == ViewMode.Add)
             {
-                using (dbMalukovEntities db = new dbMalukovEntities())
-                {
-                    db.Выдача.Add(ViewModel.EditableEquipment);
-                    db.SaveChanges();
-                }
+
+
+
+                //using (dbMalukovEntities db = new dbMalukovEntities())
+                //{
+                DB.Connection.Выдача.Add(ViewModel.РедактируемаяВыдача);
+                DB.Connection.SaveChanges();
+                //}
                 MessageBox.Show("Техника успешно выдана сотруднику!");
-                ViewModel.Equipments.Add(ViewModel.EditableEquipment);
+                ViewModel.Выдачи.Add(ViewModel.РедактируемаяВыдача);
             }
             else if (ViewModel.Mode == ViewMode.Edit) // не работает
             {
-                using (dbMalukovEntities db = new dbMalukovEntities())
+                int index = 0;
+                for (; index < ViewModel.Выдачи.Count; index++)
                 {
-                    var equipment = db.Выдача.FirstOrDefault(eq => eq.ID == ViewModel.EditableEquipment.ID);
-                    equipment.Код_сотр = ViewModel.EditableEquipment.Код_сотр;
-                    equipment.Код_техники = ViewModel.EditableEquipment.Код_техники;
-                    equipment.ID = ViewModel.EditableEquipment.ID;
-                    equipment.Дата_выдачи = ViewModel.EditableEquipment.Дата_выдачи;
-                    equipment.Дата_окончания = ViewModel.EditableEquipment.Дата_окончания;
-                    equipment.Эксплуатация = ViewModel.EditableEquipment.Эксплуатация;
-                    equipment.Сотрудник = ViewModel.EditableEquipment.Сотрудник;
-                    equipment.Техника = ViewModel.EditableEquipment.Техника;
-                    db.SaveChanges();
-                    ViewModel.EditableEquipment = equipment;
-                }
-                MessageBox.Show("Информация обновлена!");
-                for (int i = 0; i < ViewModel.Equipments.Count; i++)
-                {
-                    if (ViewModel.Equipments[i].ID == ViewModel.EditableEquipment.ID)
+                    if (ViewModel.Выдачи[index].ID == ViewModel.РедактируемаяВыдача.ID)
                     {
-                        ViewModel.Equipments[i] = ViewModel.EditableEquipment;
+                        break;
                     }
                 }
-                ViewModel.EditableEquipment = null;
+                if (index < ViewModel.Выдачи.Count)
+                {
+                    var выдача = ViewModel.Выдачи[index];
+
+                    выдача.Код_сотр = ViewModel.РедактируемаяВыдача.Код_сотр;
+                    выдача.Код_техники = ViewModel.РедактируемаяВыдача.Код_техники;
+                    выдача.ID = ViewModel.РедактируемаяВыдача.ID;
+                    выдача.Дата_выдачи = ViewModel.РедактируемаяВыдача.Дата_выдачи;
+                    выдача.Дата_окончания = ViewModel.РедактируемаяВыдача.Дата_окончания;
+                    выдача.Эксплуатация = ViewModel.РедактируемаяВыдача.Эксплуатация;
+                    выдача.Сотрудник = ViewModel.РедактируемаяВыдача.Сотрудник;
+                    выдача.Техника = ViewModel.РедактируемаяВыдача.Техника;
+                    DB.Connection.SaveChanges();
+
+                    ViewModel.Выдачи[index] = ViewModel.РедактируемаяВыдача;
+
+                    ViewModel.Выдачи[index] = выдача;
+                    MessageBox.Show("Информация обновлена!");
+                    ViewModel.РедактируемаяВыдача = null;
+                }
+
+                ViewModel.Mode = ViewMode.View;
             }
         }
 
         private void DeactiveGroupBox_Click(object sender, RoutedEventArgs e)
         {
+            ViewModel.Mode = ViewMode.View;
+        }
 
+        private void OnFilterВыдачи(object sender, FilterEventArgs e)
+        {
+            Выдача выдача = (Выдача)e.Item;
+
+            if (ViewModel.ВыбранныйСотрудник != DB.ВсеСотрудники && ViewModel.ВыбранныйСотрудник != null)
+            {
+                e.Accepted = выдача.Код_сотр == ViewModel.ВыбранныйСотрудник.Код_сотр;
+            }
+            if (ViewModel.ЕслиЭксплуатация)
+            {
+                e.Accepted &= выдача.Эксплуатация;
+            }
+            if (!string.IsNullOrEmpty(ViewModel.ПоискТехники))
+            {
+                e.Accepted &= выдача.Техника.Название.Contains(ViewModel.ПоискТехники);
+            }
         }
     }
+
 }

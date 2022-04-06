@@ -3,10 +3,20 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Inspector.Pages"
+      xmlns:local="clr-namespace:Inspector.Pages" xmlns:inspector="clr-namespace:Inspector"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="1233"
-      Title="MaterialLiability" DataContext="{Binding ViewModel, RelativeSource={RelativeSource Self}}">
+      Title="MaterialLiability" DataContext="{DynamicResource vm}">
+    <FrameworkElement.Resources>
+        <local:MaterialLiabilityVM x:Key="vm"/>
+        <CollectionViewSource Source="{Binding Выдачи}"
+                              Filter="OnFilterВыдачи" x:Key="filteremployee"/>
+
+        <CompositeCollection x:Key="allepm">
+            <x:Static Member="inspector:DB.ВсеСотрудники"/>
+            <CollectionContainer Collection="{Binding Сотрудники, Source={StaticResource vm}}"/>
+        </CompositeCollection>
+    </FrameworkElement.Resources>
 
     <Grid Background="AliceBlue">
         <Grid.ColumnDefinitions>
@@ -30,16 +40,33 @@
         </Menu>
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="2" x:Name="CompactFiltering" Visibility="Visible">
             <Label Content="Название техники: " FontSize="14" ToolTip="Впишите в текстовое поле название техники, чтобы выполнить фильтрацию"/>
-            <TextBox x:Name="txbSearch" Width="105" Height="25" TextChanged="txbSearch_TextChanged"/>
+            <TextBox x:Name="txbSearch" Width="105" Height="25" TextChanged="txbSearch_TextChanged" Text="{Binding ПоискТехники, UpdateSourceTrigger=PropertyChanged}"/>
             <Label Content="Сотрудник: " FontSize="14" ToolTip="Выберите сотрудника из списка, для просмотра закрепленной за ним техники."/>
-            <ComboBox x:Name="cmbSearch" Width="105" Height="25" SelectionChanged="cmbSearch_SelectionChanged" SelectedValue="{Binding Path=MyResponsobility.Код_сотр}"/>
+            <ComboBox x:Name="cmbSearch" Width="105" Height="25" SelectionChanged="cmbSearch_SelectionChanged" SelectedValue="{Binding Path=MyResponsobility.Код_сотр}"
+                      ItemsSource="{Binding Mode=OneWay, Source={StaticResource allepm}}"
+                      DisplayMemberPath="ФИО_сотр"
+                      SelectedValuePath="Код_сотр" SelectedIndex="0" SelectedItem="{Binding ВыбранныйСотрудник}"/>
             <CheckBox Grid.ColumnSpan="2" Grid.Row="1" x:Name="CheckedRunning" VerticalAlignment="Center" HorizontalAlignment="Right" 
-                  Content="Эксплуатация" Margin="65 0" IsChecked="False" Width="100" Click="CheckRunning_Click"/>
+                  Content="Эксплуатация" Margin="65 0" IsChecked="{Binding ЕслиЭксплуатация}" Width="100" Click="CheckRunning_Click"/>
         </StackPanel>
         <DataGrid Name="ResponsobilityGrid" CanUserAddRows="False" IsReadOnly="False"
-                  SelectionMode="Single" AutoGenerateColumns="False" Grid.Row="2" ItemsSource="{Binding Equipments}"
+                  SelectionMode="Single" AutoGenerateColumns="False" Grid.Row="2"
+                  ItemsSource="{Binding Mode=OneWay, Source={StaticResource filteremployee}}"
                   SelectedItem="{Binding SelectedEquipment}"
                   Grid.ColumnSpan="2" RowBackground="Beige" AlternatingRowBackground="DarkSeaGreen" VirtualizingPanel.IsVirtualizing="False">
+            <FrameworkElement.Style>
+                <Style TargetType="FrameworkElement">
+                    <Setter Property="IsEnabled" Value="False"/>
+                    <Setter Property="Opacity" Value="0.7"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=Mode}"
+                                     Value="{x:Static local:ViewMode.View}">
+                            <Setter Property="IsEnabled" Value="True"/>
+                            <Setter Property="Opacity" Value="1"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </FrameworkElement.Style>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Код" Binding="{Binding ID}" Width="50"/>
                 <DataGridTextColumn Header="Техника" Binding="{Binding Техника.Название}" Width="*"/>
@@ -54,16 +81,26 @@
                 <MultiBinding Converter="{local:ModeToVisibilityMaterialLiability}">
                     <Binding Path="Mode"/>
                     <Binding Path="SelectedEquipment"/>
-                    <Binding Path="EditableEquipment"/>
+                    <Binding Path="РедактируемаяВыдача"/>
                 </MultiBinding>
             </FrameworkElement.Visibility>
             <FrameworkElement.Tag>
                 <MultiBinding Converter="{local:ModeToВыдача}">
                     <Binding Path="Mode"/>
                     <Binding Path="SelectedEquipment"/>
-                    <Binding Path="EditableEquipment"/>
+                    <Binding Path="РедактируемаяВыдача"/>
                 </MultiBinding>
             </FrameworkElement.Tag>
+            <FrameworkElement.Style>
+                <Style TargetType="FrameworkElement">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=Mode}"
+                                     Value="{x:Static local:ViewMode.View}">
+                            <Setter Property="IsEnabled" Value="False"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </FrameworkElement.Style>
             <StackPanel Orientation="Vertical" DataContext="{Binding Tag, ElementName=MenuGroupBox}">
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Height="30" Width="200" FontFamily="Times New Roman" 
                    FontSize="16" Margin="42,0,31,0" FontWeight="Bold">
@@ -82,19 +119,35 @@
                     </TextBlock.Style>
                 </TextBlock>
                 <Label Content="Техника" FontWeight="DemiBold" FontFamily="Times New Roman" FontSize="16"/>
-                <ComboBox x:Name="Techcmb" SelectedValue="{Binding Path=Код_техники}"/>
+                <ComboBox x:Name="Techcmb" SelectedValue="{Binding Path=Код_техники}" SelectedValuePath="Код"
+                          ItemsSource="{Binding Техники, Mode=OneWay, Source={StaticResource vm}}"
+                          DisplayMemberPath="Название" SelectedItem="{Binding Техника}"/>
                 <Label Content="ФИО сотрудника" FontWeight="DemiBold" FontFamily="Times New Roman" FontSize="16"/>
-                <ComboBox x:Name="Employeecmb" Text="{Binding Код_сотр}"/>
+                <ComboBox x:Name="Employeecmb" SelectedValue="{Binding Код_сотр}"
+                          ItemsSource="{Binding Сотрудники, Mode=OneWay, Source={StaticResource vm}}" SelectedItem="{Binding Сотрудник}"
+                          DisplayMemberPath="ФИО_сотр" SelectedValuePath="Код_сотр"/>
                 <Label Content="Дата выдачи" FontWeight="DemiBold" FontFamily="Times New Roman" FontSize="16"/>
                 <DatePicker  x:Name="datapicker1" DisplayDate="{Binding Дата_выдачи, Mode=TwoWay}"/>
                 <Label Content="Дата окончания" FontWeight="DemiBold" FontFamily="Times New Roman" FontSize="16"/>
                 <DatePicker  x:Name="datapicker2" DisplayDate="{Binding Дата_окончания, Mode=TwoWay}"/>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Эксплуатация" FontWeight="DemiBold" FontFamily="Times New Roman" FontSize="16"/>
-                    <ComboBox x:Name="CheckRunningcmb" SelectedValue="{Binding Path=Эксплуатация}" VerticalAlignment="Center"/>
+                    <CheckBox x:Name="CheckRunningcmb" IsChecked="{Binding Path=Эксплуатация}" VerticalAlignment="Center"/>
                 </StackPanel>
-                <Button Width="270" HorizontalAlignment="Center" Margin="2,5,1,5" Content="Добавить" x:Name="BtnMode" Click="BtnMode_Click"/>
-                <Button Width="270" HorizontalAlignment="Center" Content="Отмена" x:Name="BtnCancel" Margin="2,0,1,0" Click="DeactiveGroupBox_Click"/>
+                <StackPanel>
+                    <FrameworkElement.Style>
+                        <Style TargetType="FrameworkElement">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=Mode, Source={StaticResource vm}}"
+                                             Value="{x:Static local:ViewMode.View}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </FrameworkElement.Style>
+                    <Button Width="270" HorizontalAlignment="Center" Margin="2,5,1,5" Content="Добавить" x:Name="BtnMode" Click="BtnMode_Click"/>
+                    <Button Width="270" HorizontalAlignment="Center" Content="Отмена" x:Name="BtnCancel" Margin="2,0,1,0" Click="DeactiveGroupBox_Click"/>
+                </StackPanel>
             </StackPanel>
         </GroupBox>
     </Grid>

@@ -91,7 +91,7 @@
     <Compile Include="Pages\MaterialLiability.xaml.cs">
       <DependentUpon>MaterialLiability.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\MaterialLiabilityViewModel.cs" />
+    <Compile Include="Pages\MaterialLiabilityVM.cs" />
     <Compile Include="Pages\ModeToVisibilityConverter.cs" />
     <Compile Include="Pages\ModeToVisibilityEmployeesConverter.cs" />
     <Compile Include="Pages\ModeToVisibilityMaterialLiabilityConverter.cs" />
