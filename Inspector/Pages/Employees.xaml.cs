@@ -21,6 +21,9 @@ namespace Inspector.Pages
     /// </summary>
     public partial class Employees : Page
     {
+        public List<Кабинет> Cabinetlist;
+        public List<Подразделение> Divisionlist;
+        public List<Должность> Joblist;
         public EmployeesViewModel ViewModel { get; } = new EmployeesViewModel();
         public Employees()
         {
@@ -29,6 +32,20 @@ namespace Inspector.Pages
             using (dbMalukovEntities db = new dbMalukovEntities())
             {
                 equipments = db.Сотрудник.ToList();
+                Cabinetlist = db.Кабинет.OrderBy(f => f.Название).ToList();
+                Cabinetcmb.ItemsSource = Cabinetlist;
+                Cabinetcmb.DisplayMemberPath = "Название";
+                Cabinetcmb.SelectedValuePath = "Номера_кабинета";
+
+                Divisionlist = db.Подразделение.OrderBy(f => f.Подразделение1).ToList();
+                Divisioncmb.ItemsSource = Divisionlist;
+                Divisioncmb.DisplayMemberPath = "Подразделение1";
+                Divisioncmb.SelectedValuePath = "Код_подразделения";
+
+                Joblist = db.Должность.OrderBy(f => f.Должность1).ToList();
+                Jobcmb.ItemsSource = Joblist;
+                Jobcmb.DisplayMemberPath = "Должность1";
+                Jobcmb.SelectedValuePath = "Код_должности";
             }
             foreach (var item in equipments)
             {
@@ -92,7 +109,44 @@ namespace Inspector.Pages
 
         private void BtnMode_Click(object sender, RoutedEventArgs e)
         {
-
+            if (ViewModel.Mode == ViewMode.Add)
+            {
+                using (dbMalukovEntities db = new dbMalukovEntities())
+                {
+                    db.Сотрудник.Add(ViewModel.EditableEquipment);
+                    db.SaveChanges();
+                }
+                MessageBox.Show("Новая техника зарегистрирована на складе!");
+                ViewModel.Equipments.Add(ViewModel.EditableEquipment);
+            }
+            else if (ViewModel.Mode == ViewMode.Edit) // не работает
+            {
+                using (dbMalukovEntities db = new dbMalukovEntities())
+                {
+                    var equipment = db.Сотрудник.FirstOrDefault(eq => eq.Код_сотр == ViewModel.EditableEquipment.Код_сотр);
+                    equipment.Код_сотр = ViewModel.EditableEquipment.Код_сотр;
+                    equipment.ФИО_сотр = ViewModel.EditableEquipment.ФИО_сотр;
+                    equipment.Дата_рождения = ViewModel.EditableEquipment.Дата_рождения;
+                    equipment.Номер_кабинета = ViewModel.EditableEquipment.Номер_кабинета;
+                    equipment.Код_подразделения = ViewModel.EditableEquipment.Код_подразделения;
+                    equipment.Код_должности = ViewModel.EditableEquipment.Код_должности;
+                    equipment.Номер_телефона = ViewModel.EditableEquipment.Номер_телефона;
+                    equipment.Должность = ViewModel.EditableEquipment.Должность;
+                    equipment.Выдача = ViewModel.EditableEquipment.Выдача;
+                    equipment.Подразделение = ViewModel.EditableEquipment.Подразделение;
+                    db.SaveChanges();
+                    ViewModel.EditableEquipment = equipment;
+                }
+                MessageBox.Show("Информация обновлена!");
+                for (int i = 0; i < ViewModel.Equipments.Count; i++)
+                {
+                    if (ViewModel.Equipments[i].Код_сотр == ViewModel.EditableEquipment.Код_сотр)
+                    {
+                        ViewModel.Equipments[i] = ViewModel.EditableEquipment;
+                    }
+                }
+                ViewModel.EditableEquipment = null;
+            }
         }
 
         private void DeactiveGroupBox_Click(object sender, RoutedEventArgs e)
@@ -126,7 +180,13 @@ namespace Inspector.Pages
 
         private void DeleteStringFromGrid_Click(object sender, RoutedEventArgs e)
         {
-
+            int Id = (EmployeesGrid.SelectedItem as Сотрудник).Код_сотр;
+            var db = new dbMalukovEntities();
+            var deleteEmployee = db.Сотрудник.Where(m => m.Код_сотр == Id).Single();
+            db.Сотрудник.Remove(deleteEmployee);
+            db.SaveChanges();
+            EmployeesGrid.ItemsSource = db.Сотрудник.ToList();
+            MessageBox.Show("Удаление успешно");
         }
     }
 }
