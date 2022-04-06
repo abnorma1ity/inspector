@@ -91,8 +91,11 @@
     <Compile Include="Pages\MaterialLiability.xaml.cs">
       <DependentUpon>MaterialLiability.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\MaterialLiabilityViewModel.cs" />
     <Compile Include="Pages\ModeToVisibilityConverter.cs" />
     <Compile Include="Pages\ModeToVisibilityEmployeesConverter.cs" />
+    <Compile Include="Pages\ModeToVisibilityMaterialLiabilityConverter.cs" />
+    <Compile Include="Pages\ModeToВыдачаConverter.cs" />
     <Compile Include="Pages\ModeToСотрудникConverter.cs" />
     <Compile Include="Pages\ModeToТехникаConverter.cs" />
     <Compile Include="Pages\UpdatePage.xaml.cs">
