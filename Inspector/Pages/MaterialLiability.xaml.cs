@@ -83,22 +83,29 @@ namespace Inspector.Pages
         }
         private void Update()
         {
-            var db = new dbMalukovEntities();
-            var us = db.Выдача.ToList();
-            var sotr = (cmbSearch.SelectedItem as Сотрудник).Код_сотр;
-            if (cmbSearch.SelectedIndex != 0)
+            try
             {
-                us = us.Where(f => f.Код_сотр == sotr).ToList(); // фильтр по фамилиям сотрудников
+                var db = new dbMalukovEntities();
+                var us = db.Выдача.ToList();
+                var sotr = (cmbSearch.SelectedItem as Сотрудник).Код_сотр;
+                if (cmbSearch.SelectedIndex != 0)
+                {
+                    us = us.Where(f => f.Код_сотр == sotr).ToList(); // фильтр по фамилиям сотрудников
+                }
+                if (CheckedRunning.IsChecked == true)
+                {
+                    us = us.Where(f => f.Эксплуатация == true).ToList(); // фильтр по эксплуатации
+                }
+                if (txbSearch.Text.Length > 0)
+                {
+                    us = us.Where(find => find.Техника.Название.Contains(txbSearch.Text)).ToList(); // фильтр по эксплуатации
+                }
+                ResponsobilityGrid.ItemsSource = us.ToList();
             }
-            if (CheckedRunning.IsChecked == true)
+            catch
             {
-                us = us.Where(f => f.Эксплуатация == true).ToList(); // фильтр по эксплуатации
+                MessageBox.Show("Одно из полей поиска не заполнено");
             }
-            if (txbSearch.Text.Length > 0)
-            {
-                us = us.Where(find => find.Техника.Название.Contains(txbSearch.Text)).ToList();
-            }
-            ResponsobilityGrid.ItemsSource = us.ToList();
         }
         private void ResetOut()
         {
@@ -121,10 +128,6 @@ namespace Inspector.Pages
         private void CheckRunning_Click(object sender, RoutedEventArgs e) // клик по чекбоксу Эксплуатация
         {
             Update();
-        }
-        private void CancelSearch_Click(object sender, RoutedEventArgs e) // кнопка отмены
-        {
-            CompactFiltering.Visibility = Visibility.Hidden;
         }
         private void cmbSearch_SelectionChanged(object sender, SelectionChangedEventArgs e) // фильтр по сотруднику
         {

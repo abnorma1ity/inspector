@@ -35,7 +35,7 @@ namespace Inspector.Pages
                 Cabinetlist = db.Кабинет.OrderBy(f => f.Название).ToList();
                 Cabinetcmb.ItemsSource = Cabinetlist;
                 Cabinetcmb.DisplayMemberPath = "Название";
-                Cabinetcmb.SelectedValuePath = "Номера_кабинета";
+                Cabinetcmb.SelectedValuePath = "Номер_кабинета";
 
                 Divisionlist = db.Подразделение.OrderBy(f => f.Подразделение1).ToList();
                 Divisioncmb.ItemsSource = Divisionlist;
@@ -161,7 +161,7 @@ namespace Inspector.Pages
             ViewModel.EditableEquipment = new Сотрудник();
         }
 
-        private void ActivateGroupBoxEdit_Click(object sender, RoutedEventArgs e)
+        private void ActivateGroupBoxEdit_Click(object sender, RoutedEventArgs e) // добавление
         {
             ViewModel.Mode = ViewMode.Edit;
             BtnMode.Content = "Редактировать";

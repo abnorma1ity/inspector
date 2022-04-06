@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Inspector.Pages"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="450" d:DesignWidth="1233"
       Title="MaterialLiability">
 
     <Grid Background="AliceBlue">
@@ -25,7 +25,6 @@
                     <MenuItem Header="Редактирование записи" Click="ActivateGroupBoxEdit_Click"/>
                 </MenuItem>
             </MenuItem>
-            <MenuItem Header="Поиск" Click="ActivateSearch_Click"/>
             <MenuItem Header="Экспорт в Excel" Click="Export_Click"/>
         </Menu>
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="2" x:Name="CompactFiltering" Visibility="Visible">
@@ -33,10 +32,9 @@
             <TextBox x:Name="txbSearch" Width="105" Height="25" TextChanged="txbSearch_TextChanged"/>
             <Label Content="Сотрудник: " FontSize="14" ToolTip="Выберите сотрудника из списка, для просмотра закрепленной за ним техники."/>
             <ComboBox x:Name="cmbSearch" Width="105" Height="25" SelectionChanged="cmbSearch_SelectionChanged" SelectedValue="{Binding Path=MyResponsobility.Код_сотр}"/>
-            <Button Height="25" Width="55" VerticalAlignment="Center" Margin="5 0 0 0" Content="Отмена" Click="CancelSearch_Click"/>
+            <CheckBox Grid.ColumnSpan="2" Grid.Row="1" x:Name="CheckedRunning" VerticalAlignment="Center" HorizontalAlignment="Right" 
+                  Content="Эксплуатация" Margin="65 0" IsChecked="False" Width="100" Click="CheckRunning_Click"/>
         </StackPanel>
-        <CheckBox Grid.ColumnSpan="2" Grid.Row="1" x:Name="CheckedRunning" VerticalAlignment="Center" HorizontalAlignment="Right" 
-                  Content="Эксплуатация" Margin="0 0 435 0" IsChecked="False" Width="100" Click="CheckRunning_Click"/>
         <DataGrid Name="ResponsobilityGrid" CanUserAddRows="False" IsReadOnly="False"
                   SelectionMode="Single" AutoGenerateColumns="False" Grid.Row="2"
                   Grid.ColumnSpan="3" RowBackground="Beige" AlternatingRowBackground="DarkSeaGreen" VirtualizingPanel.IsVirtualizing="False">
@@ -44,8 +42,8 @@
                 <DataGridTextColumn Header="Код" Binding="{Binding ID}" Width="50"/>
                 <DataGridTextColumn Header="Техника" Binding="{Binding Техника.Название}" Width="90"/>
                 <DataGridTextColumn Header="ФИО Cотрудника" Binding="{Binding Сотрудник.ФИО_сотр}" Width="155"/>
-                <DataGridTextColumn Header="Дата выдачи" Binding="{Binding Дата_выдачи, StringFormat={}{0:dd.MM.yyyy}}" Width="200"/>
-                <DataGridTextColumn Header="Дата окончания" Binding="{Binding Дата_окончания, StringFormat={}{0:dd.MM.yyyy}}" Width="200"/>
+                <DataGridTextColumn Header="Дата выдачи" Binding="{Binding Дата_выдачи, StringFormat={}{0:dd.MM.yyyy}}" Width="95"/>
+                <DataGridTextColumn Header="Дата окончания" Binding="{Binding Дата_окончания, StringFormat={}{0:dd.MM.yyyy}}" Width="95"/>
                 <DataGridTextColumn Header="Эксплуатация" Binding="{Binding Эксплуатация}" Width="100"/>
             </DataGrid.Columns>
         </DataGrid>

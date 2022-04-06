@@ -11,7 +11,8 @@
     <Grid Background="AliceBlue">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="750"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
@@ -26,7 +27,6 @@
                     <MenuItem Header="Удаление записи" Click="DeleteStringFromGrid_Click"/>
                 </MenuItem>
             </MenuItem>
-            <MenuItem Header="Поиск" Click="ActivateSearch_Click"/>
             <MenuItem Header="Экспорт в Excel" Click="Export_Click"/>
         </Menu>
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="2" x:Name="CompactFiltering">
@@ -35,7 +35,7 @@
         </StackPanel>
         <DataGrid Name="EmployeesGrid" CanUserAddRows="False" IsReadOnly="True"
                   SelectionMode="Single" AutoGenerateColumns="False" Grid.Row="2"
-                  Grid.ColumnSpan="1" RowBackground="Beige" AlternatingRowBackground="DarkSeaGreen"
+                  Grid.ColumnSpan="2" RowBackground="Beige" AlternatingRowBackground="DarkSeaGreen"
                   ItemsSource="{Binding Equipments}"
               SelectedItem="{Binding SelectedEquipment}">
             <DataGrid.Columns>
@@ -48,7 +48,7 @@
                 <DataGridTextColumn Header="Номер телефона" Binding="{Binding Номер_телефона}" Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
-        <GroupBox x:Name="MenuGroupBox" Grid.Column="1" Header="Режим" HorizontalAlignment="Left" Height="435" Margin="5,0,0,0" Grid.Row="2" VerticalAlignment="Top" Width="285" Background="#FFEEEAEA">
+        <GroupBox x:Name="MenuGroupBox" Grid.Column="2" Header="Режим" HorizontalAlignment="Left" Height="435" Margin="5,0,0,0" Grid.Row="2" VerticalAlignment="Top" Width="285" Background="#FFEEEAEA">
             <FrameworkElement.Visibility>
                 <MultiBinding Converter="{local:ModeToVisibilityEmployees}">
                     <Binding Path="Mode"/>
@@ -84,12 +84,12 @@
                 <TextBox x:Name="NameTxb" Text="{Binding ФИО_сотр}"/>
                 <Label Content="Дата рождения" FontWeight="DemiBold" FontFamily="Times New Roman" FontSize="16"/>
                 <DatePicker  x:Name="datapicker" DisplayDate="{Binding Дата_рождения, Mode=TwoWay}"/>
-                <Label Content="Номер кабинета" FontWeight="DemiBold" FontFamily="Times New Roman" FontSize="16"/>
-                <ComboBox x:Name="Cabinetcmb"/>
+                <Label Content="Название кабинета" FontWeight="DemiBold" FontFamily="Times New Roman" FontSize="16"/>
+                <ComboBox x:Name="Cabinetcmb" SelectedValue="{Binding Path=Номер_кабинета}"/>
                 <Label Content="Подразделение" FontWeight="DemiBold" FontFamily="Times New Roman" FontSize="16"/>
-                <ComboBox x:Name="Divisioncmb"/>
+                <ComboBox x:Name="Divisioncmb" SelectedValue="{Binding Path=Код_подразделения}"/>
                 <Label Content="Должность" FontWeight="DemiBold" FontFamily="Times New Roman" FontSize="16"/>
-                <ComboBox x:Name="Jobcmb"/>
+                <ComboBox x:Name="Jobcmb" SelectedValue="{Binding Path=Код_должности}"/>
                 <Label Content="Номер телефона" FontWeight="DemiBold" FontFamily="Times New Roman" FontSize="16" />
                 <TextBox x:Name="PhoneTxb" Text="{Binding Номер_телефона}"/>
                 <Button Width="270" HorizontalAlignment="Center" Margin="2,5,1,5" Content="Добавить" x:Name="BtnMode" Click="BtnMode_Click"/>

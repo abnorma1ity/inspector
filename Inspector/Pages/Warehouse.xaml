@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Inspector.Pages"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="700" d:DesignWidth="1555"
       Title="Warehouse"
       DataContext="{Binding ViewModel, RelativeSource={RelativeSource Self}}">
     <Grid Background="AliceBlue" Margin="0,0,0,-48">
@@ -18,7 +18,7 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
             <ColumnDefinition/>
-            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="295"/>
         </Grid.ColumnDefinitions>
         <Menu VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="2">
             <MenuItem Header="Действия">
@@ -28,12 +28,11 @@
                     <MenuItem Header="Удаление записи" Click="DeleteStringFromGrid_Click"/>
                 </MenuItem>
             </MenuItem>
-            <MenuItem Header="Поиск" Click="ActivateSearch_Click"/>
             <MenuItem Header="Экспорт в Excel" Click="Export_Click"/>
         </Menu>
-        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="4" x:Name="CompactFiltering" Visibility="Hidden" HorizontalAlignment="Right" Width="1225">
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="4" x:Name="CompactFiltering">
             <RadioButton x:Name="CheckStr" VerticalAlignment="Center" Click="CheckStr_Click" Margin="5" IsChecked="True"/>
-            <Label Content="Поиск(параметры, модель, название): " FontSize="14"/>
+            <Label Content="Поиск: " FontSize="14"/>
             <TextBox x:Name="txbSearch" Width="105" Height="25" TextChanged="txbSearch_TextChanged" />
             <RadioButton x:Name="CheckedDate" VerticalAlignment="Center" Margin="15 0 0 0" IsChecked="False" Click="CheckedDate_Click"/>
             <Label Content="Поиск по дате с:" FontSize="14" VerticalAlignment="Center"/>
@@ -41,11 +40,10 @@
             <Label Content="по" FontSize="14" VerticalAlignment="Center"/>
             <DatePicker x:Name="dtSecond" VerticalAlignment="Center"/>
             <Button x:Name="btnOK" Content="OK" Height="25" Width="55" VerticalAlignment="Center" Margin="10 0" Click="Button_Click"/>
-            <Button Content="Отмена" Height="25" Width="55" VerticalAlignment="Center" Margin="10 0" Click="DeactivateSearch_Click"/>
         </StackPanel>
         <DataGrid Name="WarehouseGrid" CanUserAddRows="False" IsReadOnly="True" 
                   SelectionMode="Single" AutoGenerateColumns="False" Grid.Row="2" Grid.RowSpan="2"
-                  Grid.ColumnSpan="3" RowBackground="Beige" AlternatingRowBackground="DarkSeaGreen" MouseDoubleClick="WarehouseGrid_MouseDoubleClick"
+                  Grid.ColumnSpan="3" RowBackground="Beige" AlternatingRowBackground="DarkSeaGreen"
               SelectionUnit="FullRow"
               ItemsSource="{Binding Equipments}"
               SelectedItem="{Binding SelectedEquipment}">

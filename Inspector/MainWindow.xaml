@@ -5,14 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Inspector"
         mc:Ignorable="d"
-        Title="Автоматизированный учёт компьютерной техники" Height="700" Width="1555" Icon="/Icon/cpu.png" WindowStartupLocation="CenterScreen">
+        Title="Автоматизированный учёт компьютерной техники" Height="700" Width="1555" Icon="/Icon/cpu.png" WindowStartupLocation="CenterScreen" WindowState="Maximized">
     <Grid Background="WhiteSmoke">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="295"/>
+            <ColumnDefinition Width="290"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="65"/>
+            <RowDefinition Height="45"/>
             <RowDefinition/>
             <RowDefinition Height="35"/>
             <RowDefinition Height="25"/>
@@ -22,14 +22,6 @@
             <Label HorizontalAlignment="Center" VerticalAlignment="Bottom" Content="Администрация г. Орска" FontFamily="Elephant" FontSize="20" FontWeight="Medium"/>
         </StackPanel>
         <StackPanel Grid.RowSpan="4" Grid.Row="2"/>
-        <Menu VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="2">
-            <MenuItem Click="WarehouseOpen" Header="Склад" />
-            <MenuItem Header="Материальная ответственность"/>
-            <MenuItem Header="Сотрудники"/>
-            <MenuItem Header="Справочники"/>
-            <MenuItem Header="Отчёты"/>
-            <MenuItem Header="Выход" Click="ExitMenu_Click" />
-        </Menu>
         <StackPanel Grid.Row="1" Background="WhiteSmoke">
             <Button Content="Склад" Click="WarehouseOpen"/>
             <Button Content="Материальная ответственность" Click="MaterialLiabilityOpen"/>

@@ -166,11 +166,9 @@ namespace Inspector.Pages
             {
                 var db = new dbMalukovEntities();
                 var us = db.Техника.ToList();
-                //MessageBox.Show(us.Count.ToString());
                 CompactFiltering.Visibility = Visibility.Visible;
                 if (txbSearch.Text.Length > 0)
                 {
-                    //MessageBox.Show(txbSearch.Text);
                     var result = us.Where(f => f.Название.Contains(txbSearch.Text));
                     WarehouseGrid.ItemsSource = result.ToList();
                 }
@@ -252,16 +250,5 @@ namespace Inspector.Pages
             MessageBox.Show("Удаление успешно");
         }
 
-        private void WarehouseGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            var ba = WarehouseGrid.SelectedItem as Техника;
-            NameTxb.Text = ba.Название;
-            ModelTxb.Text = ba.Модель;
-            ParamsTxb.Text = ba.Параметры;
-            OstatokTxb.Text = ba.Остаток_на_складе.ToString();
-            PriceTxb.Text = ba.Цена.ToString();
-            // datapicker.DisplayDate = ba.Дата_последнего_обновления;
-            // MessageBox.Show("Название" + ba.Название);
-        }
     }
 }
