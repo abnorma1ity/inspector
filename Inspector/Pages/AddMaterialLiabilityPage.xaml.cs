@@ -18,6 +18,7 @@ namespace Inspector.Pages
     /// <summary>
     /// Логика взаимодействия для AddMaterialLiabilityPage.xaml
     /// </summary>
+    /// тест
     public partial class AddMaterialLiabilityPage : Page
     {
         dbMalukovEntities tech;
