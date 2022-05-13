@@ -132,24 +132,15 @@ namespace Inspector.Pages
                 ResetOut();
             }
         }
-        private void insertPage_Click(object sender, RoutedEventArgs e)
-        {
-            NavigationService.Navigate(new InsertPage(new Кабинет()));
-        }
-        private void updateBtn_Click(object sender, RoutedEventArgs e)
-        {
-            int Id = (CabinetGrid.SelectedItem as Кабинет).Номер_кабинета;
-            NavigationService.Navigate(new UpdatePage(new Кабинет(Id)));
-        }
 
-        private void deleteBtn_Click(object sender, RoutedEventArgs e)
-        {
-            int Id = (CabinetGrid.SelectedItem as Кабинет).Номер_кабинета;
-            var deleteCabinet = db.Кабинет.Where(m => m.Номер_кабинета == Id).Single();
-            db.Кабинет.Remove(deleteCabinet);
-            db.SaveChanges();
-            CabinetGrid.ItemsSource = db.Кабинет.ToList();
-            MessageBox.Show("Удаление успешно");
-        }
+        //private void deleteBtn_Click(object sender, RoutedEventArgs e)
+        //{
+        //    int Id = (CabinetGrid.SelectedItem as Кабинет).Номер_кабинета;
+        //    var deleteCabinet = db.Кабинет.Where(m => m.Номер_кабинета == Id).Single();
+        //    db.Кабинет.Remove(deleteCabinet);
+        //    db.SaveChanges();
+        //    CabinetGrid.ItemsSource = db.Кабинет.ToList();
+        //    MessageBox.Show("Удаление успешно");
+        //}
     }
 }

@@ -11,8 +11,7 @@ namespace Inspector
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class Техника
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -21,15 +20,13 @@ namespace Inspector
             this.Выдача = new HashSet<Выдача>();
         }
     
-        [Key]
         public int Код { get; set; }
         public string Название { get; set; }
         public string Модель { get; set; }
-        public Nullable<int> Количество { get; set; }
         public string Параметры { get; set; }
-        public Nullable<int> Остаток_на_складе { get; set; }
         public Nullable<decimal> Цена { get; set; }
         public Nullable<System.DateTime> Дата_последнего_обновления { get; set; }
+        public string Инвентарный_номер { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Выдача> Выдача { get; set; }

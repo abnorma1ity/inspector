@@ -19,17 +19,11 @@ namespace Inspector
         {
             this.Сотрудник = new HashSet<Сотрудник>();
         }
-
-        public Кабинет(int id)
-        {
-            Id = id;
-        }
-
+    
         public int Номер_кабинета { get; set; }
         public string Название { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Сотрудник> Сотрудник { get; set; }
-        public int Id { get; }
     }
 }

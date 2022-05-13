@@ -51,11 +51,22 @@ namespace Inspector.Pages
             {
                 ViewModel.Equipments.Add(item);
             }
-        }
 
-        private void ActivateSearch_Click(object sender, RoutedEventArgs e)
-        {
+            if (AuthInfoAbout.Auth != 1) // ограничения для пользователя
+            {
+                BtnMode.IsEnabled = false;
+                BtnCancel.IsEnabled = false;
+                ActivateGroupBoxAdd.IsEnabled = false;
+                Delete.IsEnabled = false;
+                ActivateGroupBoxEdit.IsEnabled = false;
+                Cabinetcmb.IsEnabled = false;
+                Divisioncmb.IsEnabled = false;
+                Jobcmb.IsEnabled = false;
+                NameTxb.IsEnabled = false;
+                PhoneTxb.IsEnabled = false;
+                datapicker.IsEnabled = false;
 
+            }
         }
 
         private void Export_Click(object sender, RoutedEventArgs e)
@@ -116,7 +127,7 @@ namespace Inspector.Pages
                     db.Сотрудник.Add(ViewModel.EditableEquipment);
                     db.SaveChanges();
                 }
-                MessageBox.Show("Новая техника зарегистрирована на складе!");
+                MessageBox.Show("Новый сотрудник успешно добавлен!");
                 ViewModel.Equipments.Add(ViewModel.EditableEquipment);
             }
             else if (ViewModel.Mode == ViewMode.Edit) // не работает
@@ -151,7 +162,7 @@ namespace Inspector.Pages
 
         private void DeactiveGroupBox_Click(object sender, RoutedEventArgs e)
         {
-
+            ViewModel.Mode = ViewMode.View;
         }
 
         private void ActivateGroupBoxAdd_Click(object sender, RoutedEventArgs e)

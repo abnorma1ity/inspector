@@ -19,6 +19,8 @@ namespace Inspector
     /// </summary>
     public partial class LoginWindow : Window
     {
+        public int count = 0;
+        public int failCount = 3;
         public LoginWindow()
         {
             InitializeComponent();
@@ -31,21 +33,38 @@ namespace Inspector
 
         private void btnInput_Click(object sender, RoutedEventArgs e)
         {
+            string strForm2Text = TextLogin.Text;
+            string strPassword = TextPasw.Password;
             var db = new dbMalukovEntities();
             var us = db.Security.ToList();
-            var result = us.Where(f => f.login == TextLogin.Text && f.password == TextPasw.Password);
-            if (result.Any() == true)
+            var result = us.Where(f => f.login == strForm2Text && f.password == strPassword);
+            if (result.Any() == true) // администратор
             {
-                var page = new MainWindow();
+                if (TextLogin.Text == "admin")
+                {
+                    AuthInfoAbout.Auth = 1;
+                }
+                else
+                {
+                    AuthInfoAbout.Auth = 2;
+                }
+                count = 0;
+                MainWindow page = new MainWindow();
                 page.Show();
                 this.Close();
-
             }
             else
             {
-                MessageBox.Show("Неверный логин или пароль");
+                failCount--;
+                count++;
+                MessageBox.Show($"Неверный логин или пароль. Осталось попыток входа: {failCount}");
                 TextLogin.Focus();
-                return;
+                if (count == 3)
+                {
+                    MessageBox.Show($"Введены неверный логин или пароль в кол-ве {count} раз, приложение будет закрыто!");
+                    this.Close();
+                    return;
+                }
             }
         }
     }

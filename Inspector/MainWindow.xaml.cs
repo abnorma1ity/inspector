@@ -31,6 +31,12 @@ namespace Inspector
             lnkImgOK.RequestNavigate += (s, e) => { Process.Start(e.Uri.ToString()); };
             lnkImgVK.RequestNavigate += (s, e) => { Process.Start(e.Uri.ToString()); };
             lnkToWebSite.RequestNavigate += (s, e) => { Process.Start(e.Uri.ToString()); };
+            var db = new dbMalukovEntities();
+            var user = db.Security.FirstOrDefault(f => f.id == AuthInfoAbout.Auth);
+            //MessageBox.Show(user.ToString());
+            //if (AuthInfoAbout.Auth != 1)
+            //    MessageBox.Show($"Вы вошли под пользователем: {user.description}.", "Внимание", MessageBoxButton.OK, MessageBoxImage.Information);
+            //else MessageBox.Show($"Вы вошли под пользователем: {user.description}.", "Внимание", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void ExitMenu_Click(object sender, RoutedEventArgs e)
@@ -140,7 +146,11 @@ namespace Inspector
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-
+            var db = new dbMalukovEntities();
+            var user = db.Security.FirstOrDefault(f => f.id == AuthInfoAbout.Auth);
+            if (AuthInfoAbout.Auth != 1)
+                AuthInfoAboutqq.Text = $"Вход выполнен как: {user.description}";
+            else AuthInfoAboutqq.Text = $"Вход выполнен как: {user.description}";
         }
     }
 }

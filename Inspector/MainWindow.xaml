@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Inspector"
         mc:Ignorable="d"
-        Title="Автоматизированный учёт компьютерной техники" Height="700" Width="1555" Icon="/Icon/cpu.png" WindowStartupLocation="CenterScreen" WindowState="Maximized">
+        Title="Inventory System" Height="700" Width="1555" Icon="/Icon/cpu.png" WindowStartupLocation="CenterScreen" WindowState="Maximized" Loaded="Window_Loaded">
     <Grid Background="WhiteSmoke">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="290"/>
@@ -29,7 +29,7 @@
             <Button Content="Справочники" Click="SpravsClick"/>
         </StackPanel>
         <Frame Grid.RowSpan="3" Grid.Row="1" Grid.Column="1" Background="WhiteSmoke" Name="MainFrame"/>
-        <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
+        <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" Visibility="Hidden">
             <TextBlock VerticalAlignment="Center">
                 <Hyperlink Name="lnkImgTLG" NavigateUri="https://t.me/admorsk" TextDecorations="None">
                     <Image x:Name="telegram" Source="Icon/telegram.png" Width="33" Height="33" Margin="5" ToolTip="Перейти в наш телеграмм канал" MouseEnter="Image_MouseEnter" MouseLeave="telegram_MouseLeave"/>
@@ -46,15 +46,18 @@
                 </Hyperlink>
             </TextBlock>
         </StackPanel>
-        <StackPanel Grid.Row="2">
+        <StackPanel Grid.Row="2" Visibility="Hidden">
             <Label Content="Официальный портал: " FontFamily="Microsoft JhengHei" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         </StackPanel>
-        <StackPanel Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden">
                 <TextBlock>
                 <Hyperlink Name="lnkToWebSite" NavigateUri="http://orsk-adm.ru/" TextDecorations="None">
                     <Label x:Name="WebSite" Content="http://orsk-adm.ru/" FontFamily="Microsoft JhengHei" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" MouseEnter="WebSite_MouseEnter" MouseLeave="WebSite_MouseLeave"/>
                 </Hyperlink>
             </TextBlock>
+        </StackPanel>
+        <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
+            <TextBlock Margin="25 0" VerticalAlignment="Center" x:Name="AuthInfoAboutqq" FontFamily="Elephant" FontSize="16"/>
         </StackPanel>
     </Grid>
 </Window>

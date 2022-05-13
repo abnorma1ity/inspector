@@ -11,10 +11,12 @@
           <Key>
             <PropertyRef Name="login" />
             <PropertyRef Name="password" />
+            <PropertyRef Name="id" />
           </Key>
           <Property Name="login" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="description" Type="varchar" MaxLength="100" />
+          <Property Name="id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Выдача">
           <Key>
@@ -25,8 +27,9 @@
           <Property Name="Код_сотр" Type="int" />
           <Property Name="Дата_выдачи" Type="date" />
           <Property Name="Дата_окончания" Type="date" />
+          <Property Name="Дата_обслуживания" Type="date" />
           <Property Name="Эксплуатация" Type="bit" Nullable="false" />
-          <Property Name="Статус" Type="varchar" MaxLength="50" />
+          <Property Name="Кабинет" Type="smallint" />
         </EntityType>
         <EntityType Name="Должность">
           <Key>
@@ -82,38 +85,13 @@
             <PropertyRef Name="Код" />
           </Key>
           <Property Name="Код" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Инвентарный_номер" Type="varchar" MaxLength="15" />
           <Property Name="Название" Type="varchar" MaxLength="200" />
           <Property Name="Модель" Type="varchar" MaxLength="200" />
-          <Property Name="Количество" Type="int" />
           <Property Name="Параметры" Type="varchar" MaxLength="200" />
-          <Property Name="Остаток_на_складе" Type="int" />
           <Property Name="Цена" Type="money" />
           <Property Name="Дата_последнего_обновления" Type="date" />
         </EntityType>
-        <Association Name="FK_Выдача_Сотрудник">
-          <End Role="Сотрудник" Type="Self.Сотрудник" Multiplicity="0..1" />
-          <End Role="Выдача" Type="Self.Выдача" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Сотрудник">
-              <PropertyRef Name="Код_сотр" />
-            </Principal>
-            <Dependent Role="Выдача">
-              <PropertyRef Name="Код_сотр" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Выдача_Техника">
-          <End Role="Техника" Type="Self.Техника" Multiplicity="0..1" />
-          <End Role="Выдача" Type="Self.Выдача" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Техника">
-              <PropertyRef Name="Код" />
-            </Principal>
-            <Dependent Role="Выдача">
-              <PropertyRef Name="Код_техники" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Сотрудник_Должность">
           <End Role="Должность" Type="Self.Должность" Multiplicity="0..1" />
           <End Role="Сотрудник" Type="Self.Сотрудник" Multiplicity="*" />
@@ -161,7 +139,8 @@
             <DefiningQuery>SELECT 
     [Security].[login] AS [login], 
     [Security].[password] AS [password], 
-    [Security].[description] AS [description]
+    [Security].[description] AS [description], 
+    [Security].[id] AS [id]
     FROM [dbo].[Security] AS [Security]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="Списание" EntityType="Self.Списание" store:Type="Tables" store:Schema="dbo">
@@ -173,14 +152,6 @@
     [Списание].[Причина] AS [Причина]
     FROM [dbo].[Списание] AS [Списание]</DefiningQuery>
           </EntitySet>
-          <AssociationSet Name="FK_Выдача_Сотрудник" Association="Self.FK_Выдача_Сотрудник">
-            <End Role="Сотрудник" EntitySet="Сотрудник" />
-            <End Role="Выдача" EntitySet="Выдача" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Выдача_Техника" Association="Self.FK_Выдача_Техника">
-            <End Role="Техника" EntitySet="Техника" />
-            <End Role="Выдача" EntitySet="Выдача" />
-          </AssociationSet>
           <AssociationSet Name="FK_Сотрудник_Должность" Association="Self.FK_Сотрудник_Должность">
             <End Role="Должность" EntitySet="Должность" />
             <End Role="Сотрудник" EntitySet="Сотрудник" />
@@ -208,9 +179,10 @@
           <Property Name="Дата_выдачи" Type="DateTime" Precision="0" />
           <Property Name="Дата_окончания" Type="DateTime" Precision="0" />
           <Property Name="Эксплуатация" Type="Boolean" Nullable="false" />
-          <Property Name="Статус" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Сотрудник" Relationship="Self.FK_Выдача_Сотрудник" FromRole="Выдача" ToRole="Сотрудник" />
           <NavigationProperty Name="Техника" Relationship="Self.FK_Выдача_Техника" FromRole="Выдача" ToRole="Техника" />
+          <Property Name="Дата_обслуживания" Type="DateTime" Precision="0" />
+          <Property Name="Кабинет" Type="Int16" />
         </EntityType>
         <EntityType Name="Должность">
           <Key>
@@ -263,12 +235,11 @@
           <Property Name="Код" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Название" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="Модель" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="Количество" Type="Int32" />
           <Property Name="Параметры" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="Остаток_на_складе" Type="Int32" />
           <Property Name="Цена" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="Дата_последнего_обновления" Type="DateTime" Precision="0" />
           <NavigationProperty Name="Выдача" Relationship="Self.FK_Выдача_Техника" FromRole="Техника" ToRole="Выдача" />
+          <Property Name="Инвентарный_номер" Type="String" />
         </EntityType>
         <EntityType Name="Списание">
           <Key>
@@ -374,10 +345,12 @@
           <Key>
             <PropertyRef Name="login" />
             <PropertyRef Name="password" />
+            <PropertyRef Name="id" />
           </Key>
           <Property Name="login" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="id" Type="Int32" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -388,13 +361,14 @@
           <EntitySetMapping Name="Выдача">
             <EntityTypeMapping TypeName="dbMalukovModel.Выдача">
               <MappingFragment StoreEntitySet="Выдача">
+                <ScalarProperty Name="Кабинет" ColumnName="Кабинет" />
+                <ScalarProperty Name="Дата_обслуживания" ColumnName="Дата_обслуживания" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Код_техники" ColumnName="Код_техники" />
                 <ScalarProperty Name="Код_сотр" ColumnName="Код_сотр" />
                 <ScalarProperty Name="Дата_выдачи" ColumnName="Дата_выдачи" />
                 <ScalarProperty Name="Дата_окончания" ColumnName="Дата_окончания" />
                 <ScalarProperty Name="Эксплуатация" ColumnName="Эксплуатация" />
-                <ScalarProperty Name="Статус" ColumnName="Статус" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -442,12 +416,11 @@
           <EntitySetMapping Name="Техника">
             <EntityTypeMapping TypeName="dbMalukovModel.Техника">
               <MappingFragment StoreEntitySet="Техника">
+                <ScalarProperty Name="Инвентарный_номер" ColumnName="Инвентарный_номер" />
                 <ScalarProperty Name="Код" ColumnName="Код" />
                 <ScalarProperty Name="Название" ColumnName="Название" />
                 <ScalarProperty Name="Модель" ColumnName="Модель" />
-                <ScalarProperty Name="Количество" ColumnName="Количество" />
                 <ScalarProperty Name="Параметры" ColumnName="Параметры" />
-                <ScalarProperty Name="Остаток_на_складе" ColumnName="Остаток_на_складе" />
                 <ScalarProperty Name="Цена" ColumnName="Цена" />
                 <ScalarProperty Name="Дата_последнего_обновления" ColumnName="Дата_последнего_обновления" />
               </MappingFragment>
@@ -467,6 +440,7 @@
           <EntitySetMapping Name="Security">
             <EntityTypeMapping TypeName="dbMalukovModel.Security">
               <MappingFragment StoreEntitySet="Security">
+                <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="description" ColumnName="description" />
                 <ScalarProperty Name="password" ColumnName="password" />
                 <ScalarProperty Name="login" ColumnName="login" />

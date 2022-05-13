@@ -17,5 +17,6 @@ namespace Inspector
         public string login { get; set; }
         public string password { get; set; }
         public string description { get; set; }
+        public int id { get; set; }
     }
 }

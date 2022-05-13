@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -13,14 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Excel = Microsoft.Office.Interop.Excel;
+using static Inspector.Pages.ExcelHelper;
 
 namespace Inspector.Pages
 {
     /// <summary>
     /// Логика взаимодействия для MaterialLiability.xaml
     /// </summary>
-    public partial class MaterialLiability : Page
+    public partial class MaterialLiability : System.Windows.Controls.Page
     {
         public MaterialLiabilityVM ViewModel { get; } = new MaterialLiabilityVM();
 
@@ -31,6 +30,15 @@ namespace Inspector.Pages
         public MaterialLiability()
         {
             InitializeComponent();
+            if (AuthInfoAbout.Auth != 1) // login
+            {
+                BtnMode.IsEnabled = false;
+                BtnCancel.IsEnabled = false;
+                ActivateGroupBoxAdd.IsEnabled = false;
+                ActivateGroupBoxEdit.IsEnabled = false;
+                var db = new dbMalukovEntities();
+                var user = db.Security.FirstOrDefault(f => f.id == AuthInfoAbout.Auth);
+            }
 
             ViewModel = (MaterialLiabilityVM)Resources["vm"];
             filteremployee = (CollectionViewSource)Resources["filteremployee"];
@@ -51,6 +59,8 @@ namespace Inspector.Pages
                 Код_техники = ViewModel.SelectedEquipment.Код_техники,
                 Дата_выдачи = ViewModel.SelectedEquipment.Дата_выдачи,
                 Дата_окончания = ViewModel.SelectedEquipment.Дата_окончания,
+                Дата_обслуживания = ViewModel.SelectedEquipment.Дата_обслуживания,
+                Кабинет = ViewModel.SelectedEquipment.Кабинет,
                 Эксплуатация = ViewModel.SelectedEquipment.Эксплуатация,
                 ID = ViewModel.SelectedEquipment.ID,
                 Сотрудник = ViewModel.SelectedEquipment.Сотрудник,
@@ -58,81 +68,13 @@ namespace Inspector.Pages
                 //Выдача = ViewModel.SelectedEquipment.Выдача
             };
         }
-        private void Export_Click(object sender, RoutedEventArgs e)
+        private void Export_Click(object sender, RoutedEventArgs e) // export
         {
-            var db = new dbMalukovEntities();
-            var application = new Excel.Application();
-            application.Visible = true;
-            Excel.Workbook workbook = application.Workbooks.Add(System.Reflection.Missing.Value);
-            Excel.Worksheet sheet1 = application.Worksheets.Item[1]; //Sheets[1];
-            sheet1.Name = "Выдача";
-
-            for (int j = 1; j < ResponsobilityGrid.Columns.Count + 1; j++)
-            {
-                Excel.Range myRange = (Excel.Range)sheet1.Cells[1, j];
-                //sheet1.Columns[j].ColumnWidth = 25;
-                myRange.Value2 = ResponsobilityGrid.Columns[j - 1].Header;
-                myRange.Font.Bold = true;
-                myRange.Columns.AutoFit();
-            }
-            for (int i = 1; i <= ResponsobilityGrid.Columns.Count; i++)
-                for (int j = 0; j < ResponsobilityGrid.Items.Count; j++)
-                {
-                    TextBlock b = ResponsobilityGrid.Columns[i - 1].GetCellContent(ResponsobilityGrid.Items[j]) as TextBlock;
-                    if (b == null)
-                        continue;
-
-                    Microsoft.Office.Interop.Excel.Range myrange = (Microsoft.Office.Interop.Excel.Range)sheet1.Cells[j + 2, i];
-                    myrange.Value2 = b.Text;
-                }
-
+           DataGridToSheet("Выдача", ResponsobilityGrid);
         }
-        //private void Update()
-        //{
-        //    try
-        //    {
-        //        var db = new dbMalukovEntities();
-        //        var us = db.Выдача.ToList();
-        //        var sotr = (cmbSearch.SelectedItem as Сотрудник).Код_сотр;
-        //        if (cmbSearch.SelectedIndex != 0)
-        //        {
-        //            us = us.Where(f => f.Код_сотр == sotr).ToList(); // фильтр по фамилиям сотрудников
-        //        }
-        //        if (ViewModel.ЕслиЭксплуатация)
-        //        {
-        //            us = us.Where(f => f.Эксплуатация == true).ToList(); // фильтр по эксплуатации
-        //        }
-        //        if (txbSearch.Text.Length > 0)
-        //        {
-        //            us = us.Where(find => find.Техника.Название.Contains(txbSearch.Text)).ToList(); // фильтр по эксплуатации
-        //        }
-        //        filteremployee?.View.Refresh();
-        //    }
-        //    catch
-        //    {
-        //        MessageBox.Show("Одно из полей поиска не заполнено");
-        //    }
-        //}
-        private void ResetOut()
-        {
-            CheckedRunning.IsChecked = false;
-            ResponsobilityGrid.ItemsSource = DB.Connection.Выдача.ToList();
-            txbSearch.Clear();
-        }
-
         private void txbSearch_TextChanged(object sender, TextChangedEventArgs e) // поиск по названию
         {
-
-
             filteremployee?.View.Refresh();
-            //if (txbSearch.Text.Length > 0)
-            //{
-            //    Update();
-            //}
-            //else
-            //{
-            //    ResetOut();
-            //}
         }
         private void CheckRunning_Click(object sender, RoutedEventArgs e) // клик по чекбоксу Эксплуатация
         {
@@ -147,18 +89,17 @@ namespace Inspector.Pages
         {
             if (ViewModel.Mode == ViewMode.Add)
             {
-
-
-
-                //using (dbMalukovEntities db = new dbMalukovEntities())
-                //{
+                var equipment = DB.Выдачи.FirstOrDefault(eq => eq.Код_техники == ViewModel.РедактируемаяВыдача.Код_техники);
+                if (equipment != null)
+                {
+                    DB.Выдачи.Remove(equipment);
+                }
                 DB.Connection.Выдача.Add(ViewModel.РедактируемаяВыдача);
                 DB.Connection.SaveChanges();
-                //}
                 MessageBox.Show("Техника успешно выдана сотруднику!");
                 ViewModel.Выдачи.Add(ViewModel.РедактируемаяВыдача);
             }
-            else if (ViewModel.Mode == ViewMode.Edit) // не работает
+            else if (ViewModel.Mode == ViewMode.Edit) // редактирование
             {
                 int index = 0;
                 for (; index < ViewModel.Выдачи.Count; index++)
@@ -177,6 +118,8 @@ namespace Inspector.Pages
                     выдача.ID = ViewModel.РедактируемаяВыдача.ID;
                     выдача.Дата_выдачи = ViewModel.РедактируемаяВыдача.Дата_выдачи;
                     выдача.Дата_окончания = ViewModel.РедактируемаяВыдача.Дата_окончания;
+                    выдача.Дата_обслуживания = ViewModel.РедактируемаяВыдача.Дата_обслуживания;
+                    выдача.Кабинет = ViewModel.РедактируемаяВыдача.Кабинет;
                     выдача.Эксплуатация = ViewModel.РедактируемаяВыдача.Эксплуатация;
                     выдача.Сотрудник = ViewModel.РедактируемаяВыдача.Сотрудник;
                     выдача.Техника = ViewModel.РедактируемаяВыдача.Техника;
@@ -212,8 +155,22 @@ namespace Inspector.Pages
             }
             if (!string.IsNullOrEmpty(ViewModel.ПоискТехники))
             {
-                e.Accepted &= выдача.Техника.Название.Contains(ViewModel.ПоискТехники);
+                if (выдача.Техника == null)
+                {
+                    e.Accepted = false;
+
+                }
+                else
+                {
+                    e.Accepted &= выдача.Техника.Название.Contains(ViewModel.ПоискТехники) ||
+                                  выдача.Техника.Параметры.Contains(ViewModel.ПоискТехники);
+                }
             }
+        }
+
+        private void cmbCabSearch_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 

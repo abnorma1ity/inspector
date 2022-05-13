@@ -21,12 +21,10 @@
             <ColumnDefinition Width="295"/>
         </Grid.ColumnDefinitions>
         <Menu VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="2">
-            <MenuItem Header="Действия">
-                <MenuItem Header="Правка">
-                    <MenuItem Header="Добавление записи" Click="ActivateGroupBoxAdd_Click"/>
-                    <MenuItem Header="Редактирование записи" Click="ActivateGroupBoxEdit_Click"/>
-                    <MenuItem Header="Удаление записи" Click="DeleteStringFromGrid_Click"/>
-                </MenuItem>
+            <MenuItem Header="Правка">
+                <MenuItem Header="Добавление записи" Click="ActivateGroupBoxAdd_Click" x:Name="ActivateGroupBoxAdd"/>
+                <MenuItem Header="Редактирование записи" Click="ActivateGroupBoxEdit_Click" x:Name="ActivateGroupBoxEdit"/>
+                <MenuItem Header="Удаление записи" Click="DeleteStringFromGrid_Click" x:Name="Delete"/>
             </MenuItem>
             <MenuItem Header="Экспорт в Excel" Click="Export_Click"/>
         </Menu>
@@ -46,18 +44,32 @@
                   Grid.ColumnSpan="3" RowBackground="Beige" AlternatingRowBackground="DarkSeaGreen"
               SelectionUnit="FullRow"
               ItemsSource="{Binding Equipments}"
-              SelectedItem="{Binding SelectedEquipment}">
+              SelectedItem="{Binding SelectedEquipment}" SelectedIndex="0">
+            <FrameworkElement.Style>
+                <Style TargetType="FrameworkElement">
+                    <Setter Property="IsEnabled" Value="False"/>
+                    <Setter Property="Opacity" Value="0.7"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=Mode}"
+                                     Value="{x:Static local:ViewMode.View}">
+                            <Setter Property="IsEnabled" Value="True"/>
+                            <Setter Property="Opacity" Value="1"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </FrameworkElement.Style>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Код" Binding="{Binding Код}" Width="50"/>
+                <DataGridTextColumn Header="Инвентарный номер" Binding="{Binding Инвентарный_номер}" Width="150"/>
                 <DataGridTextColumn Header="Название" Binding="{Binding Название}" Width="90"/>
                 <DataGridTextColumn Header="Модель" Binding="{Binding Модель}" Width="110"/>
                 <DataGridTextColumn Header="Параметры" Binding="{Binding Параметры}" Width="200"/>
-                <DataGridTextColumn Header="Остаток на складе" Binding="{Binding Остаток_на_складе}" Width="150"/>
                 <DataGridTextColumn Header="Цена" Binding="{Binding Цена, StringFormat={}{0:N2} руб}" Width="100"/>
                 <DataGridTextColumn Header="Дата последнего обновления" Binding="{Binding Дата_последнего_обновления, StringFormat={}{0:dd.MM.yyyy}}" Width="180"/>
             </DataGrid.Columns>
         </DataGrid>
-        <GroupBox x:Name="MenuGroupBox" Grid.Column="3" Header="Режим" HorizontalAlignment="Left" Height="444" Margin="5.333,0,0,-49" Grid.Row="2" VerticalAlignment="Top" Width="285" Background="#FFEEEAEA">
+        <GroupBox x:Name="MenuGroupBox" Grid.Column="3" Header="Режим" HorizontalAlignment="Left" Height="444" Margin="5.333,0,0,-49"
+                  Grid.Row="2" VerticalAlignment="Top" Width="285" Background="#FFEEEAEA">
             <FrameworkElement.Visibility>
                 <MultiBinding Converter="{local:ModeToVisibility}">
                     <Binding Path="Mode"/>
@@ -72,6 +84,16 @@
                     <Binding Path="EditableEquipment"/>
                 </MultiBinding>
             </FrameworkElement.Tag>
+            <FrameworkElement.Style>
+                <Style TargetType="FrameworkElement">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=Mode}"
+                                     Value="{x:Static local:ViewMode.View}">
+                            <Setter Property="IsEnabled" Value="False"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </FrameworkElement.Style>
             <StackPanel Orientation="Vertical" DataContext="{Binding Tag, ElementName=MenuGroupBox}">
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Height="30" Width="200" FontFamily="Times New Roman" 
                    FontSize="16" Margin="42,0,31,0" FontWeight="Bold">
@@ -95,14 +117,38 @@
                 <TextBox x:Name="ModelTxb" Text="{Binding Модель}"/>
                 <Label Content="Параметры" FontWeight="DemiBold" FontFamily="Times New Roman" FontSize="16"/>
                 <TextBox x:Name="ParamsTxb" Text="{Binding Параметры}"/>
-                <Label Content="Остаток" FontWeight="DemiBold" FontFamily="Times New Roman" FontSize="16"/>
-                <TextBox x:Name="OstatokTxb" Text="{Binding Остаток_на_складе}"/>
+                <Label Content="Инвентарный номер" FontWeight="DemiBold" FontFamily="Times New Roman" FontSize="16"/>
+                <TextBox x:Name="InventoryNumberTxb" Text="{Binding Инвентарный_номер}">
+                    <FrameworkElement.Style>
+                        <Style TargetType="TextBox">
+                            <Setter Property="IsEnabled" Value="False"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=ViewModel.Mode, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Page}}"
+                                             Value="{x:Static local:ViewMode.Add}">
+                                    <Setter Property="IsEnabled" Value="True"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </FrameworkElement.Style>
+                </TextBox>
                 <Label Content="Цена" FontWeight="DemiBold" FontFamily="Times New Roman" FontSize="16"/>
                 <TextBox x:Name="PriceTxb" Text="{Binding Цена}"/>
                 <Label Content="Дата последнего обновления" FontWeight="DemiBold" FontFamily="Times New Roman" FontSize="16" />
                 <DatePicker  x:Name="datapicker" DisplayDate="{Binding Дата_последнего_обновления, Mode=TwoWay}"/>
-                <Button Width="270" HorizontalAlignment="Center" Margin="2,5,1,5" Content="Добавить" x:Name="BtnMode" Click="BtnMode_Click"/>
-                <Button Width="270" HorizontalAlignment="Center" Content="Отмена" x:Name="BtnCancel" Margin="2,0,1,0" Click="DeactiveGroupBox_Click"/>
+                <StackPanel>
+                    <FrameworkElement.Style>
+                        <Style TargetType="FrameworkElement">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=ViewModel.Mode, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Page}}"
+                                             Value="{x:Static local:ViewMode.View}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </FrameworkElement.Style>
+                    <Button Width="270" HorizontalAlignment="Center" Margin="2,5,1,5" Content="Добавить" x:Name="BtnMode" Click="BtnMode_Click"/>
+                    <Button Width="270" HorizontalAlignment="Center" Content="Отмена" x:Name="BtnCancel" Margin="2,0,1,0" Click="DeactiveGroupBox_Click"/>
+                </StackPanel>
             </StackPanel>
         </GroupBox>
     </Grid>

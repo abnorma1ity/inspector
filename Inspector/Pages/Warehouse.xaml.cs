@@ -13,7 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Excel = Microsoft.Office.Interop.Excel;
+using static Inspector.Pages.ExcelHelper;
 
 namespace Inspector.Pages
 {
@@ -36,11 +36,23 @@ namespace Inspector.Pages
             {
                 ViewModel.Equipments.Add(item);
             }
-
             InitializeComponent();
+            if (AuthInfoAbout.Auth != 1) // ограничения пользователя
+            {
+                BtnMode.IsEnabled = false;
+                BtnCancel.IsEnabled = false;
+                ActivateGroupBoxAdd.IsEnabled = false;
+                Delete.IsEnabled = false;
+                ActivateGroupBoxEdit.IsEnabled = false;
+                NameTxb.IsEnabled = false;
+                ModelTxb.IsEnabled = false;
+                ParamsTxb.IsEnabled = false;
+                InventoryNumberTxb.IsEnabled = false;
+                PriceTxb.IsEnabled = false;
+                datapicker.IsEnabled = false;
+                var user = db.Security.FirstOrDefault(f => f.id == AuthInfoAbout.Auth);
+            }
         }
-
-        //public Техника Mytech { get; set; }
 
         private void ResetOut()
         {
@@ -49,101 +61,74 @@ namespace Inspector.Pages
             txbSearch.Clear();
         }
 
-        private void ActivateSearch_Click(object sender, RoutedEventArgs e)
-        {
-
-            CompactFiltering.Visibility = Visibility.Visible;
-
-        }
-
-        private void DeactivateSearch_Click(object sender, RoutedEventArgs e)
-        {
-            CompactFiltering.Visibility = Visibility.Hidden;
-            WarehouseGrid.ItemsSource = DB.Connection.Техника.ToList();
-        }
-
         private void DeactiveGroupBox_Click(object sender, RoutedEventArgs e)
         {
-            //MenuGroupBox.Visibility = Visibility.Hidden;
+            ViewModel.Mode = ViewMode.View;
         }
 
         private void ActivateGroupBoxAdd_Click(object sender, RoutedEventArgs e) // меню действия добавить
         {
-            //MenuGroupBox.Visibility = Visibility.Visible;
             ViewModel.Mode = ViewMode.Add;
-            //ChangeModeLabel.Content = "Добавление записи";
             BtnMode.Content = "Добавить";
             ViewModel.EditableEquipment = new Техника();
-            // MessageBox.Show(Mytech.ToString());
         }
 
         private void ActivateGroupBoxEdit_Click(object sender, RoutedEventArgs e) // меню действия редактировать
         {
-            //MenuGroupBox.Visibility = Visibility.Visible;
             ViewModel.Mode = ViewMode.Edit;
-            //ChangeModeLabel.Content = "Редактирование записи";
             BtnMode.Content = "Редактировать";
             ViewModel.EditableEquipment = new Техника()
             {
                 Название = ViewModel.SelectedEquipment.Название,
                 Модель = ViewModel.SelectedEquipment.Модель,
                 Параметры = ViewModel.SelectedEquipment.Параметры,
-                Остаток_на_складе = ViewModel.SelectedEquipment.Остаток_на_складе,
                 Цена = ViewModel.SelectedEquipment.Цена,
                 Дата_последнего_обновления = ViewModel.SelectedEquipment.Дата_последнего_обновления,
+                Инвентарный_номер = ViewModel.SelectedEquipment.Инвентарный_номер,
                 Код = ViewModel.SelectedEquipment.Код,
-                Количество = ViewModel.SelectedEquipment.Количество,
-                //Выдача = ViewModel.SelectedEquipment.Выдача
             };
         }
 
         private void BtnMode_Click(object sender, RoutedEventArgs e) // кнопка изменения режима (добавить или рещдактировать)
         {
-            /* var name = NameTxb.Text;
-             var model = ModelTxb.Text;
-             var parametrs = ParamsTxb.Text;
-             var ostatok = OstatokTxb.Text;
-             var price = PriceTxb.Text;
-             var dtPicker = datapicker.DisplayDate;
-             var u = new Техника();
-
-             u.Название = name;
-             u.Модель = model;
-             u.Параметры = parametrs;
-             u.Остаток_на_складе = Convert.ToInt32(ostatok);
-             u.Цена = Convert.ToInt32(price);
-             u.Дата_последнего_обновления = dtPicker; */
-
-            /*if (string.IsNullOrEmpty(NameTxb.Text) == true || string.IsNullOrEmpty(ModelTxb.Text) == true || string.IsNullOrEmpty(ParamsTxb.Text) == true
-                || string.IsNullOrEmpty(OstatokTxb.Text) == true || string.IsNullOrEmpty(PriceTxb.Text) == true)
-            {
-                MessageBox.Show("Не все данные введены!");
-                return;
-            } */
-            //MessageBox.Show("***" + Mytech.ToString());
             if (ViewModel.Mode == ViewMode.Add)
             {
                 using (dbMalukovEntities db = new dbMalukovEntities())
                 {
+                    var equipment = db.Техника.FirstOrDefault(eq => eq.Инвентарный_номер == ViewModel.EditableEquipment.Инвентарный_номер);
+                    if (equipment != null)
+                    {
+                        MessageBox.Show("Данный инвентарный номер уже используется");
+                        return;
+                    }
                     db.Техника.Add(ViewModel.EditableEquipment);
                     db.SaveChanges();
                 }
                 MessageBox.Show("Новая техника зарегистрирована на складе!");
                 ViewModel.Equipments.Add(ViewModel.EditableEquipment);
             }
-            else if (ViewModel.Mode == ViewMode.Edit) // не работает
+            else if (ViewModel.Mode == ViewMode.Edit)
             {
                 using (dbMalukovEntities db = new dbMalukovEntities())
                 {
                     var equipment = db.Техника.FirstOrDefault(eq => eq.Код == ViewModel.EditableEquipment.Код);
+                    if (equipment == null)
+                    {
+                        MessageBox.Show("Техника не найдена");
+                        return;
+                    }
+                     if (equipment.Инвентарный_номер != ViewModel.EditableEquipment.Инвентарный_номер)
+                    {
+                        MessageBox.Show("Инвентарный номер нельзя изменять");
+                        return;
+                    }
                     equipment.Название = ViewModel.EditableEquipment.Название;
                     equipment.Модель = ViewModel.EditableEquipment.Модель;
                     equipment.Параметры = ViewModel.EditableEquipment.Параметры;
-                    equipment.Остаток_на_складе = ViewModel.EditableEquipment.Остаток_на_складе;
+                    equipment.Инвентарный_номер = ViewModel.EditableEquipment.Инвентарный_номер;
                     equipment.Цена = ViewModel.EditableEquipment.Цена;
                     equipment.Дата_последнего_обновления = ViewModel.EditableEquipment.Дата_последнего_обновления;
                     equipment.Код = ViewModel.EditableEquipment.Код;
-                    equipment.Количество = ViewModel.EditableEquipment.Количество;
                     equipment.Выдача = ViewModel.EditableEquipment.Выдача;
                     db.SaveChanges();
                     ViewModel.EditableEquipment = equipment;
@@ -160,7 +145,7 @@ namespace Inspector.Pages
             }
         }
 
-        private void txbSearch_TextChanged(object sender, TextChangedEventArgs e) // поиск сломался
+        private void txbSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
              if (CheckStr.IsChecked == true)
             {
@@ -216,29 +201,7 @@ namespace Inspector.Pages
 
         private void Export_Click(object sender, RoutedEventArgs e) // экспорт
         {
-            var db = new dbMalukovEntities();
-            var application = new Excel.Application();
-            application.Visible = true;
-            Excel.Workbook workbook = application.Workbooks.Add(System.Reflection.Missing.Value);
-            Excel.Worksheet sheet1 = application.Worksheets.Item[1]; //Sheets[1];
-            sheet1.Name = "Склад техники";
-
-            for (int j = 1; j < WarehouseGrid.Columns.Count + 1; j++)
-            {
-                Excel.Range myRange = (Excel.Range)sheet1.Cells[1, j];
-                //sheet1.Columns[j].ColumnWidth = 25;
-                myRange.Value2 = WarehouseGrid.Columns[j - 1].Header;
-                myRange.Font.Bold = true;
-            }
-            for (int i = 1; i <= WarehouseGrid.Columns.Count; i++)
-                for (int j = 0; j < WarehouseGrid.Items.Count; j++)
-                {
-                    TextBlock b = WarehouseGrid.Columns[i - 1].GetCellContent(WarehouseGrid.Items[j]) as TextBlock;
-                    Microsoft.Office.Interop.Excel.Range myrange = (Microsoft.Office.Interop.Excel.Range)sheet1.Cells[j + 2, i];
-                    myrange.Value2 = b.Text;
-                }
-
-
+            DataGridToSheet("Склад", WarehouseGrid);
         }
         private void DeleteStringFromGrid_Click(object sender, RoutedEventArgs e) // удаление
         {

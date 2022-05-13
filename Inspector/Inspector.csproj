@@ -64,6 +64,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AuthInfoAbout.cs" />
     <Compile Include="Common\BaseInpc.cs" />
     <Compile Include="DB.cs" />
     <Compile Include="InspectorModel.cs">
@@ -78,10 +79,12 @@
     <Compile Include="Pages\AddMaterialLiabilityPage.xaml.cs">
       <DependentUpon>AddMaterialLiabilityPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\BoolToYesNoConverter.cs" />
     <Compile Include="Pages\Employees.xaml.cs">
       <DependentUpon>Employees.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\EmployeesViewModel.cs" />
+    <Compile Include="Pages\ExcelHelper.cs" />
     <Compile Include="Pages\Handbooks.xaml.cs">
       <DependentUpon>Handbooks.xaml</DependentUpon>
     </Compile>
