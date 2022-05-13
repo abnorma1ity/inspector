@@ -33,10 +33,6 @@ namespace Inspector
             lnkToWebSite.RequestNavigate += (s, e) => { Process.Start(e.Uri.ToString()); };
             var db = new dbMalukovEntities();
             var user = db.Security.FirstOrDefault(f => f.id == AuthInfoAbout.Auth);
-            //MessageBox.Show(user.ToString());
-            //if (AuthInfoAbout.Auth != 1)
-            //    MessageBox.Show($"Вы вошли под пользователем: {user.description}.", "Внимание", MessageBoxButton.OK, MessageBoxImage.Information);
-            //else MessageBox.Show($"Вы вошли под пользователем: {user.description}.", "Внимание", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void ExitMenu_Click(object sender, RoutedEventArgs e)
