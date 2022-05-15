@@ -70,15 +70,15 @@ namespace Inspector.Pages
         {
             DataGridToSheet("Выдача", ResponsobilityGrid);
         }
-        private void txbSearch_TextChanged(object sender, TextChangedEventArgs e) // поиск по названию
+        private void txbSearch_TextChanged(object sender, TextChangedEventArgs e) // filter by names
         {
             filteremployee?.View.Refresh();
         }
-        private void CheckRunning_Click(object sender, RoutedEventArgs e) // клик по чекбоксу Эксплуатация
+        private void CheckRunning_Click(object sender, RoutedEventArgs e) // filter in running
         {
             filteremployee?.View.Refresh();
         }
-        private void cmbSearch_SelectionChanged(object sender, SelectionChangedEventArgs e) // фильтр по сотруднику
+        private void cmbSearch_SelectionChanged(object sender, SelectionChangedEventArgs e) // filter employer
         {
             filteremployee?.View.Refresh();
         }
@@ -89,7 +89,7 @@ namespace Inspector.Pages
             {
                 if (!string.IsNullOrEmpty(Techcmb.Text) || !string.IsNullOrEmpty(Employeecmb.Text))
                 {
-                    if (!string.IsNullOrEmpty(Techcmb.Text))//&& !string.IsNullOrEmpty(Employeecmb.Text))
+                    if (!string.IsNullOrEmpty(Techcmb.Text))
                     {
                         if (!string.IsNullOrEmpty(Employeecmb.Text))
                         {
@@ -192,7 +192,7 @@ namespace Inspector.Pages
             }
         }
 
-        private void cmbCabSearch_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void cmbCabSearch_SelectionChanged(object sender, SelectionChangedEventArgs e) // filter by IDs cabs
         {
             filteremployee?.View.Refresh();
         }
@@ -215,7 +215,7 @@ namespace Inspector.Pages
                 Техника = ViewModel.SelectedEquipment.Техника
             };
         }
-        private void FilterNonEmpty(object sender, FilterEventArgs e)
+        private void FilterNonEmpty(object sender, FilterEventArgs e) // filter nonEmpty
         {
             Техника item = (Техника)e.Item;
             e.Accepted = item == null;
@@ -237,7 +237,6 @@ namespace Inspector.Pages
                 DB.Connection.Списание.Add(writeoff);
                 DB.Connection.SaveChanges();
                 var t = ViewModel.SelectedEquipment.Техника;
-                //t.Списание = writeoff;
                 DB.Connection.Выдача.Remove(ViewModel.SelectedEquipment);
                 DB.Connection.SaveChanges();
                 t.Код_списания = writeoff.Код;

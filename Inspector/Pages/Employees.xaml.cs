@@ -118,20 +118,28 @@ namespace Inspector.Pages
             }
         }
 
-        private void BtnMode_Click(object sender, RoutedEventArgs e)
+        private void BtnMode_Click(object sender, RoutedEventArgs e) // switcher
         {
-            if (ViewModel.Mode == ViewMode.Add)
+            if (ViewModel.Mode == ViewMode.Add) // add
             {
-                using (dbMalukovEntities db = new dbMalukovEntities())
+                if (!string.IsNullOrEmpty(Cabinetcmb.Text) || !string.IsNullOrEmpty(Divisioncmb.Text)
+                    || !string.IsNullOrEmpty(Jobcmb.Text) || !string.IsNullOrEmpty(NameTxb.Text))
                 {
-                    db.Сотрудник.Add(ViewModel.EditableEquipment);
-                    db.SaveChanges();
+                    using (dbMalukovEntities db = new dbMalukovEntities())
+                    {
+                        db.Сотрудник.Add(ViewModel.EditableEquipment);
+                        db.SaveChanges();
+                    }
+                    MessageBox.Show("Новый сотрудник успешно добавлен!");
+                    ViewModel.Equipments.Add(ViewModel.EditableEquipment);
+                    ViewModel.Mode = ViewMode.View;
                 }
-                MessageBox.Show("Новый сотрудник успешно добавлен!");
-                ViewModel.Equipments.Add(ViewModel.EditableEquipment);
-                ViewModel.Mode = ViewMode.View;
+                else
+                {
+                    MessageBox.Show("Не заполнены поля: ФИО, Кабинет, Подразделение, Должность", "Внимание", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
-            else if (ViewModel.Mode == ViewMode.Edit)
+            else if (ViewModel.Mode == ViewMode.Edit) // edit
             {
                 using (dbMalukovEntities db = new dbMalukovEntities())
                 {
@@ -186,8 +194,7 @@ namespace Inspector.Pages
                 Номер_кабинета = ViewModel.SelectedEquipment.Номер_кабинета,
                 Код_подразделения = ViewModel.SelectedEquipment.Код_подразделения,
                 Код_должности = ViewModel.SelectedEquipment.Код_должности,
-                Номер_телефона = ViewModel.SelectedEquipment.Номер_телефона,
-                //Выдача = ViewModel.SelectedEquipment.Выдача
+                Номер_телефона = ViewModel.SelectedEquipment.Номер_телефона
             };
         }
 
@@ -214,8 +221,7 @@ namespace Inspector.Pages
                 Номер_кабинета = ViewModel.SelectedEquipment.Номер_кабинета,
                 Код_подразделения = ViewModel.SelectedEquipment.Код_подразделения,
                 Код_должности = ViewModel.SelectedEquipment.Код_должности,
-                Номер_телефона = ViewModel.SelectedEquipment.Номер_телефона,
-                //Выдача = ViewModel.SelectedEquipment.Выдача
+                Номер_телефона = ViewModel.SelectedEquipment.Номер_телефона
             };
         }
     }
