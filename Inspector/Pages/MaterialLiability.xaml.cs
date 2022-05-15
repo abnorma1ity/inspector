@@ -83,22 +83,43 @@ namespace Inspector.Pages
             filteremployee?.View.Refresh();
         }
 
-        private void BtnMode_Click(object sender, RoutedEventArgs e)
+        private void BtnMode_Click(object sender, RoutedEventArgs e) // switcher
         {
-            if (ViewModel.Mode == ViewMode.Add)
+            if (ViewModel.Mode == ViewMode.Add) // add
             {
-                var equipment = DB.Выдачи.FirstOrDefault(eq => eq.Код_техники == ViewModel.РедактируемаяВыдача.Код_техники);
-                if (equipment != null)
+                if (!string.IsNullOrEmpty(Techcmb.Text) || !string.IsNullOrEmpty(Employeecmb.Text))
                 {
-                    DB.Выдачи.Remove(equipment);
+                    if (!string.IsNullOrEmpty(Techcmb.Text))//&& !string.IsNullOrEmpty(Employeecmb.Text))
+                    {
+                        if (!string.IsNullOrEmpty(Employeecmb.Text))
+                        {
+                            var equipment = DB.Выдачи.FirstOrDefault(eq => eq.Код_техники == ViewModel.РедактируемаяВыдача.Код_техники);
+                            if (equipment != null)
+                            {
+                                DB.Выдачи.Remove(equipment);
+                            }
+                            DB.Connection.Выдача.Add(ViewModel.РедактируемаяВыдача);
+                            DB.Connection.SaveChanges();
+                            MessageBox.Show("Техника успешно выдана сотруднику!");
+                            ViewModel.Выдачи.Add(ViewModel.РедактируемаяВыдача);
+                            ViewModel.Mode = ViewMode.View;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Не выбран сотрудник для выдачи", "Внимание", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Не выбрана техника для выдачи", "Внимание", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
-                DB.Connection.Выдача.Add(ViewModel.РедактируемаяВыдача);
-                DB.Connection.SaveChanges();
-                MessageBox.Show("Техника успешно выдана сотруднику!");
-                ViewModel.Выдачи.Add(ViewModel.РедактируемаяВыдача);
-                ViewModel.Mode = ViewMode.View;
+                else
+                {
+                    MessageBox.Show("Не выбрана техника или сотрудник для выдачи", "Внимание", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
-            else if (ViewModel.Mode == ViewMode.Edit) // редактирование
+            else if (ViewModel.Mode == ViewMode.Edit) // edit
             {
                 int index = 0;
                 for (; index < ViewModel.Выдачи.Count; index++)
