@@ -10,14 +10,15 @@
         <EntityTypeShape EntityType="dbMalukovModel.Кабинет" Width="1.5" PointX="0.75" PointY="5.125" IsExpanded="true" />
         <EntityTypeShape EntityType="dbMalukovModel.Подразделение" Width="1.5" PointX="0.75" PointY="7.5" IsExpanded="true" />
         <EntityTypeShape EntityType="dbMalukovModel.Сотрудник" Width="1.5" PointX="3.125" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbMalukovModel.Техника" Width="1.5" PointX="3" PointY="5.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbMalukovModel.Списание" Width="1.5" PointX="7.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbMalukovModel.Техника" Width="1.5" PointX="4.125" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbMalukovModel.Списание" Width="1.5" PointX="7.75" PointY="5.625" IsExpanded="true" />
         <AssociationConnector Association="dbMalukovModel.FK_Выдача_Сотрудник" ManuallyRouted="false" />
         <AssociationConnector Association="dbMalukovModel.FK_Выдача_Техника" ManuallyRouted="false" />
         <AssociationConnector Association="dbMalukovModel.FK_Сотрудник_Должность" ManuallyRouted="false" />
         <AssociationConnector Association="dbMalukovModel.FK_Сотрудник_Кабинет" ManuallyRouted="false" />
         <AssociationConnector Association="dbMalukovModel.FK_Сотрудник_Подразделение" ManuallyRouted="false" />
         <EntityTypeShape EntityType="dbMalukovModel.Security" Width="1.5" PointX="7.625" PointY="1.125" />
+        <AssociationConnector Association="dbMalukovModel.FK_Техника_Списание" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

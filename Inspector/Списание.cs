@@ -14,10 +14,18 @@ namespace Inspector
     
     public partial class Списание
     {
-        public int Код { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Списание()
+        {
+            this.Техника = new HashSet<Техника>();
+        }
+    
         public string ФИО_сотр { get; set; }
-        public string Техника { get; set; }
         public Nullable<System.DateTime> Дата_списания { get; set; }
         public string Причина { get; set; }
+        public int Код { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Техника> Техника { get; set; }
     }
 }

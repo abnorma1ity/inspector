@@ -66,6 +66,7 @@
     </ApplicationDefinition>
     <Compile Include="AuthInfoAbout.cs" />
     <Compile Include="Common\BaseInpc.cs" />
+    <Compile Include="Common\ViewModelBase.cs" />
     <Compile Include="DB.cs" />
     <Compile Include="InspectorModel.cs">
       <AutoGen>True</AutoGen>
@@ -79,67 +80,53 @@
     <Compile Include="Pages\AddMaterialLiabilityPage.xaml.cs">
       <DependentUpon>AddMaterialLiabilityPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\BoolToYesNoConverter.cs" />
+    <Compile Include="Common\BoolToYesNoConverter.cs" />
     <Compile Include="Pages\Employees.xaml.cs">
       <DependentUpon>Employees.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\EmployeesViewModel.cs" />
-    <Compile Include="Pages\ExcelHelper.cs" />
+    <Compile Include="Common\EmployeesViewModel.cs" />
+    <Compile Include="Common\ExcelHelper.cs" />
     <Compile Include="Pages\Handbooks.xaml.cs">
       <DependentUpon>Handbooks.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\InsertPage.xaml.cs">
-      <DependentUpon>InsertPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\MaterialLiability.xaml.cs">
       <DependentUpon>MaterialLiability.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\MaterialLiabilityVM.cs" />
-    <Compile Include="Pages\ModeToVisibilityConverter.cs" />
-    <Compile Include="Pages\ModeToVisibilityEmployeesConverter.cs" />
-    <Compile Include="Pages\ModeToVisibilityMaterialLiabilityConverter.cs" />
-    <Compile Include="Pages\ModeToВыдачаConverter.cs" />
-    <Compile Include="Pages\ModeToСотрудникConverter.cs" />
-    <Compile Include="Pages\ModeToТехникаConverter.cs" />
-    <Compile Include="Pages\UpdatePage.xaml.cs">
-      <DependentUpon>UpdatePage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\ViewMode.cs" />
+    <Compile Include="Common\ModeToVisibilityConverter.cs" />
+    <Compile Include="Common\ModeToVisibilityEmployeesConverter.cs" />
+    <Compile Include="Common\ModeToVisibilityMaterialLiabilityConverter.cs" />
+    <Compile Include="Common\ModeToВыдачаConverter.cs" />
+    <Compile Include="Common\ModeToСотрудникConverter.cs" />
+    <Compile Include="Common\ModeToТехникаConverter.cs" />
+    <Compile Include="Common\ViewMode.cs" />
     <Compile Include="Pages\Warehouse.xaml.cs">
       <DependentUpon>Warehouse.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\WarehouseViewModel.cs" />
+    <Compile Include="Common\WarehouseViewModel.cs" />
     <Compile Include="Security.cs">
       <DependentUpon>InspectorModel.tt</DependentUpon>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Выдача.cs">
       <DependentUpon>InspectorModel.tt</DependentUpon>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Должность.cs">
       <DependentUpon>InspectorModel.tt</DependentUpon>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Кабинет.cs">
       <DependentUpon>InspectorModel.tt</DependentUpon>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Подразделение.cs">
       <DependentUpon>InspectorModel.tt</DependentUpon>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Сотрудник.cs">
       <DependentUpon>InspectorModel.tt</DependentUpon>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Списание.cs">
       <DependentUpon>InspectorModel.tt</DependentUpon>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Техника.cs">
       <DependentUpon>InspectorModel.tt</DependentUpon>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Page Include="LoginWindow.xaml">
       <SubType>Designer</SubType>
@@ -181,15 +168,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\InsertPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Pages\MaterialLiability.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\UpdatePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -23,7 +23,6 @@ namespace Inspector.Pages
     {
         public MaterialLiabilityVM ViewModel { get; } = new MaterialLiabilityVM();
 
-
         private readonly CollectionViewSource filteremployee;
 
         public List<Сотрудник> Employeelist;
@@ -65,12 +64,11 @@ namespace Inspector.Pages
                 ID = ViewModel.SelectedEquipment.ID,
                 Сотрудник = ViewModel.SelectedEquipment.Сотрудник,
                 Техника = ViewModel.SelectedEquipment.Техника
-                //Выдача = ViewModel.SelectedEquipment.Выдача
             };
         }
         private void Export_Click(object sender, RoutedEventArgs e) // export
         {
-           DataGridToSheet("Выдача", ResponsobilityGrid);
+            DataGridToSheet("Выдача", ResponsobilityGrid);
         }
         private void txbSearch_TextChanged(object sender, TextChangedEventArgs e) // поиск по названию
         {
@@ -98,6 +96,7 @@ namespace Inspector.Pages
                 DB.Connection.SaveChanges();
                 MessageBox.Show("Техника успешно выдана сотруднику!");
                 ViewModel.Выдачи.Add(ViewModel.РедактируемаяВыдача);
+                ViewModel.Mode = ViewMode.View;
             }
             else if (ViewModel.Mode == ViewMode.Edit) // редактирование
             {
@@ -149,6 +148,10 @@ namespace Inspector.Pages
             {
                 e.Accepted = выдача.Код_сотр == ViewModel.ВыбранныйСотрудник.Код_сотр;
             }
+            if (ViewModel.ВыбранныйКабинет != DB.ВсеКабинеты && ViewModel.ВыбранныйКабинет != null)
+            {
+                e.Accepted &= выдача.Кабинет == ViewModel.ВыбранныйКабинет.Номер_кабинета;
+            }
             if (ViewModel.ЕслиЭксплуатация)
             {
                 e.Accepted &= выдача.Эксплуатация;
@@ -170,7 +173,71 @@ namespace Inspector.Pages
 
         private void cmbCabSearch_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            filteremployee?.View.Refresh();
+        }
 
+        private void ResponsobilityGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ViewModel.Mode = ViewMode.Edit;
+            BtnMode.Content = "Редактировать";
+            ViewModel.РедактируемаяВыдача = new Выдача()
+            {
+                Код_сотр = ViewModel.SelectedEquipment.Код_сотр,
+                Код_техники = ViewModel.SelectedEquipment.Код_техники,
+                Дата_выдачи = ViewModel.SelectedEquipment.Дата_выдачи,
+                Дата_окончания = ViewModel.SelectedEquipment.Дата_окончания,
+                Дата_обслуживания = ViewModel.SelectedEquipment.Дата_обслуживания,
+                Кабинет = ViewModel.SelectedEquipment.Кабинет,
+                Эксплуатация = ViewModel.SelectedEquipment.Эксплуатация,
+                ID = ViewModel.SelectedEquipment.ID,
+                Сотрудник = ViewModel.SelectedEquipment.Сотрудник,
+                Техника = ViewModel.SelectedEquipment.Техника
+            };
+        }
+        private void FilterNonEmpty(object sender, FilterEventArgs e)
+        {
+            Техника item = (Техника)e.Item;
+            e.Accepted = item == null;
+        }
+        private void WriteoffTech_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (ViewModel.SelectedEquipment == null)
+                {
+                    return;
+                }
+                Списание writeoff = new Списание()
+                {
+                    Дата_списания = System.DateTime.Now,
+                    Причина = "11",
+                    ФИО_сотр = ViewModel.SelectedEquipment.Сотрудник.ФИО_сотр,
+                };
+                DB.Connection.Списание.Add(writeoff);
+                DB.Connection.SaveChanges();
+                var t = ViewModel.SelectedEquipment.Техника;
+                //t.Списание = writeoff;
+                DB.Connection.Выдача.Remove(ViewModel.SelectedEquipment);
+                DB.Connection.SaveChanges();
+                t.Код_списания = writeoff.Код;
+                DB.Connection.SaveChanges();
+
+                ViewModel.Списания.Add(writeoff);
+                for (int i = 0; i < ViewModel.Техники.Count; i++)
+                {
+                    if (ViewModel.Техники[i] == ViewModel.SelectedEquipment.Техника)
+                    {
+                        ViewModel.Техники[i] = null;
+                        ViewModel.Техники[i] = ViewModel.SelectedEquipment.Техника;
+                        break;
+                    }
+                }
+                ViewModel.Выдачи.Remove(ViewModel.SelectedEquipment);
+            }
+            catch
+            {
+                MessageBox.Show("Невозможно списать технику", "Внимание",MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 

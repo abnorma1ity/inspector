@@ -27,8 +27,10 @@ namespace Inspector
         public Nullable<decimal> Цена { get; set; }
         public Nullable<System.DateTime> Дата_последнего_обновления { get; set; }
         public string Инвентарный_номер { get; set; }
+        public Nullable<int> Код_списания { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Выдача> Выдача { get; set; }
+        public virtual Списание Списание { get; set; }
     }
 }

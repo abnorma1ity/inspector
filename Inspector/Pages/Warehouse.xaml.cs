@@ -22,7 +22,6 @@ namespace Inspector.Pages
     /// </summary>
     public partial class Warehouse : Page
     {
-        //public int mode = 0; // режим работы с groupbox 0 - добавление, 1 - редактирование
         dbMalukovEntities db = new dbMalukovEntities();
         public WarehouseViewModel ViewModel { get; } = new WarehouseViewModel();
         public Warehouse()
@@ -106,6 +105,7 @@ namespace Inspector.Pages
                 }
                 MessageBox.Show("Новая техника зарегистрирована на складе!");
                 ViewModel.Equipments.Add(ViewModel.EditableEquipment);
+                ViewModel.Mode = ViewMode.View;
             }
             else if (ViewModel.Mode == ViewMode.Edit)
             {
@@ -117,7 +117,7 @@ namespace Inspector.Pages
                         MessageBox.Show("Техника не найдена");
                         return;
                     }
-                     if (equipment.Инвентарный_номер != ViewModel.EditableEquipment.Инвентарный_номер)
+                    if (equipment.Инвентарный_номер != ViewModel.EditableEquipment.Инвентарный_номер)
                     {
                         MessageBox.Show("Инвентарный номер нельзя изменять");
                         return;
@@ -136,18 +136,19 @@ namespace Inspector.Pages
                 MessageBox.Show("Информация обновлена!");
                 for (int i = 0; i < ViewModel.Equipments.Count; i++)
                 {
-                    if(ViewModel.Equipments[i].Код == ViewModel.EditableEquipment.Код)
+                    if (ViewModel.Equipments[i].Код == ViewModel.EditableEquipment.Код)
                     {
                         ViewModel.Equipments[i] = ViewModel.EditableEquipment;
                     }
                 }
                 ViewModel.EditableEquipment = null;
+                ViewModel.Mode = ViewMode.View;
             }
         }
 
         private void txbSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
-             if (CheckStr.IsChecked == true)
+            if (CheckStr.IsChecked == true)
             {
                 var db = new dbMalukovEntities();
                 var us = db.Техника.ToList();
@@ -213,5 +214,20 @@ namespace Inspector.Pages
             MessageBox.Show("Удаление успешно");
         }
 
+        private void WarehouseGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ViewModel.Mode = ViewMode.Edit;
+            BtnMode.Content = "Редактировать";
+            ViewModel.EditableEquipment = new Техника()
+            {
+                Название = ViewModel.SelectedEquipment.Название,
+                Модель = ViewModel.SelectedEquipment.Модель,
+                Параметры = ViewModel.SelectedEquipment.Параметры,
+                Цена = ViewModel.SelectedEquipment.Цена,
+                Дата_последнего_обновления = ViewModel.SelectedEquipment.Дата_последнего_обновления,
+                Инвентарный_номер = ViewModel.SelectedEquipment.Инвентарный_номер,
+                Код = ViewModel.SelectedEquipment.Код,
+            };
+        }
     }
 }

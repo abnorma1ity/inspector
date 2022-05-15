@@ -68,15 +68,12 @@
           <Property Name="Статус_сотрудника" Type="varchar" MaxLength="50" />
           <Property Name="Дата_увольнения" Type="date" />
         </EntityType>
-        <!--Ошибки, обнаруженные при создании:
-предупреждение 6002: В таблице или представлении "dbMalukov.dbo.Списание" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
         <EntityType Name="Списание">
           <Key>
             <PropertyRef Name="Код" />
           </Key>
-          <Property Name="Код" Type="int" Nullable="false" />
+          <Property Name="Код" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ФИО_сотр" Type="nvarchar" MaxLength="255" />
-          <Property Name="Техника" Type="nvarchar" MaxLength="255" />
           <Property Name="Дата_списания" Type="datetime" />
           <Property Name="Причина" Type="nvarchar" MaxLength="255" />
         </EntityType>
@@ -91,6 +88,7 @@
           <Property Name="Параметры" Type="varchar" MaxLength="200" />
           <Property Name="Цена" Type="money" />
           <Property Name="Дата_последнего_обновления" Type="date" />
+          <Property Name="Код_списания" Type="int" />
         </EntityType>
         <Association Name="FK_Сотрудник_Должность">
           <End Role="Должность" Type="Self.Должность" Multiplicity="0..1" />
@@ -128,12 +126,25 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Техника_Списание">
+          <End Role="Списание" Type="Self.Списание" Multiplicity="0..1" />
+          <End Role="Техника" Type="Self.Техника" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Списание">
+              <PropertyRef Name="Код" />
+            </Principal>
+            <Dependent Role="Техника">
+              <PropertyRef Name="Код_списания" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="Хранилище dbMalukovModelContainer">
           <EntitySet Name="Выдача" EntityType="Self.Выдача" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Должность" EntityType="Self.Должность" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Кабинет" EntityType="Self.Кабинет" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Подразделение" EntityType="Self.Подразделение" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Сотрудник" EntityType="Self.Сотрудник" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Списание" EntityType="Self.Списание" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Техника" EntityType="Self.Техника" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Security" EntityType="Self.Security" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -142,15 +153,6 @@
     [Security].[description] AS [description], 
     [Security].[id] AS [id]
     FROM [dbo].[Security] AS [Security]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="Списание" EntityType="Self.Списание" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Списание].[Код] AS [Код], 
-    [Списание].[ФИО_сотр] AS [ФИО_сотр], 
-    [Списание].[Техника] AS [Техника], 
-    [Списание].[Дата_списания] AS [Дата_списания], 
-    [Списание].[Причина] AS [Причина]
-    FROM [dbo].[Списание] AS [Списание]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_Сотрудник_Должность" Association="Self.FK_Сотрудник_Должность">
             <End Role="Должность" EntitySet="Должность" />
@@ -163,6 +165,10 @@
           <AssociationSet Name="FK_Сотрудник_Подразделение" Association="Self.FK_Сотрудник_Подразделение">
             <End Role="Подразделение" EntitySet="Подразделение" />
             <End Role="Сотрудник" EntitySet="Сотрудник" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Техника_Списание" Association="Self.FK_Техника_Списание">
+            <End Role="Списание" EntitySet="Списание" />
+            <End Role="Техника" EntitySet="Техника" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -239,17 +245,19 @@
           <Property Name="Цена" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="Дата_последнего_обновления" Type="DateTime" Precision="0" />
           <NavigationProperty Name="Выдача" Relationship="Self.FK_Выдача_Техника" FromRole="Техника" ToRole="Выдача" />
-          <Property Name="Инвентарный_номер" Type="String" />
+          <Property Name="Инвентарный_номер" Type="String" MaxLength="15" Unicode="false" FixedLength="false" />
+          <Property Name="Код_списания" Type="Int32" />
+          <NavigationProperty Name="Списание" Relationship="dbMalukovModel.FK_Техника_Списание" FromRole="Техника" ToRole="Списание" />
         </EntityType>
         <EntityType Name="Списание">
           <Key>
             <PropertyRef Name="Код" />
           </Key>
-          <Property Name="Код" Type="Int32" Nullable="false" />
           <Property Name="ФИО_сотр" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Техника" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Дата_списания" Type="DateTime" Precision="3" />
           <Property Name="Причина" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Код" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Техника" Relationship="dbMalukovModel.FK_Техника_Списание" FromRole="Списание" ToRole="Техника" />
         </EntityType>
         <Association Name="FK_Выдача_Сотрудник">
           <End Role="Сотрудник" Type="Self.Сотрудник" Multiplicity="0..1" />
@@ -340,6 +348,10 @@
             <End Role="Сотрудник" EntitySet="Сотрудник" />
           </AssociationSet>
           <EntitySet Name="Security" EntityType="dbMalukovModel.Security" />
+          <AssociationSet Name="FK_Техника_Списание" Association="dbMalukovModel.FK_Техника_Списание">
+            <End Role="Списание" EntitySet="Списание" />
+            <End Role="Техника" EntitySet="Техника" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Security">
           <Key>
@@ -352,6 +364,18 @@
           <Property Name="description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="id" Type="Int32" Nullable="false" />
         </EntityType>
+        <Association Name="FK_Техника_Списание">
+          <End Type="dbMalukovModel.Списание" Role="Списание" Multiplicity="0..1" />
+          <End Type="dbMalukovModel.Техника" Role="Техника" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Списание">
+              <PropertyRef Name="Код" />
+            </Principal>
+            <Dependent Role="Техника">
+              <PropertyRef Name="Код_списания" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -416,6 +440,7 @@
           <EntitySetMapping Name="Техника">
             <EntityTypeMapping TypeName="dbMalukovModel.Техника">
               <MappingFragment StoreEntitySet="Техника">
+                <ScalarProperty Name="Код_списания" ColumnName="Код_списания" />
                 <ScalarProperty Name="Инвентарный_номер" ColumnName="Инвентарный_номер" />
                 <ScalarProperty Name="Код" ColumnName="Код" />
                 <ScalarProperty Name="Название" ColumnName="Название" />
@@ -431,7 +456,6 @@
               <MappingFragment StoreEntitySet="Списание">
                 <ScalarProperty Name="Код" ColumnName="Код" />
                 <ScalarProperty Name="ФИО_сотр" ColumnName="ФИО_сотр" />
-                <ScalarProperty Name="Техника" ColumnName="Техника" />
                 <ScalarProperty Name="Дата_списания" ColumnName="Дата_списания" />
                 <ScalarProperty Name="Причина" ColumnName="Причина" />
               </MappingFragment>

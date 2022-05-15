@@ -32,7 +32,7 @@
             <TextBox x:Name="txbSearch" Width="105" Height="25" TextChanged="txbSearch_TextChanged" />
         </StackPanel>
         <DataGrid Name="EmployeesGrid" CanUserAddRows="False" IsReadOnly="True"
-                  SelectionMode="Single" AutoGenerateColumns="False" Grid.Row="2"
+                  SelectionMode="Single" AutoGenerateColumns="False" Grid.Row="2" MouseDoubleClick="EmployeesGrid_MouseDoubleClick"
                   Grid.ColumnSpan="2" RowBackground="Beige" AlternatingRowBackground="DarkSeaGreen"
                   ItemsSource="{Binding Equipments}"
               SelectedItem="{Binding SelectedEquipment}" SelectedIndex="0">

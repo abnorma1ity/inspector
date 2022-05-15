@@ -3,9 +3,9 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Inspector.Pages" xmlns:inspector="clr-namespace:Inspector"
+      xmlns:local="clr-namespace:Inspector.Pages" xmlns:inspector="clr-namespace:Inspector" xmlns:sys="clr-namespace:System;assembly=mscorlib"
       mc:Ignorable="d" 
-      d:DesignHeight="600" d:DesignWidth="1233"
+      d:DesignHeight="700" d:DesignWidth="1233"
       Title="MaterialLiability" DataContext="{DynamicResource vm}">
     <FrameworkElement.Resources>
         <local:MaterialLiabilityVM x:Key="vm"/>
@@ -16,8 +16,19 @@
             <x:Static Member="inspector:DB.ВсеСотрудники"/>
             <CollectionContainer Collection="{Binding Сотрудники, Source={StaticResource vm}}"/>
         </CompositeCollection>
+        <CompositeCollection x:Key="allcabs">
+            <x:Static Member="inspector:DB.ВсеКабинеты"/>
+            <CollectionContainer Collection="{Binding Кабинеты, Source={StaticResource vm}}"/>
+        </CompositeCollection>
+        <DataTemplate DataType="{x:Type inspector:Кабинет}" x:Key="cabinetTemplate">
+            <TextBlock x:Name="PART_TBlock" Text="{Binding Номер_кабинета}"/>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding}" Value="{x:Static inspector:DB.ВсеКабинеты}">
+                    <Setter Property="Text" TargetName="PART_TBlock" Value="Все кабинеты"/>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
     </FrameworkElement.Resources>
-
     <Grid Background="AliceBlue">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -36,6 +47,7 @@
                 <MenuItem Header="Редактирование записи" Click="ActivateGroupBoxEdit_Click" x:Name="ActivateGroupBoxEdit"/>
             </MenuItem>
             <MenuItem Header="Экспорт в Excel" Click="Export_Click"/>
+            <MenuItem Header="Списать технику" Click="WriteoffTech_Click"/>
         </Menu>
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="3" x:Name="CompactFiltering" Visibility="Visible">
             <Label Content="Введите парам-ры или название техники: " FontSize="14" ToolTip="Впишите в текстовое поле название техники, чтобы выполнить фильтрацию"/>
@@ -47,14 +59,15 @@
                       SelectedValuePath="Код_сотр" SelectedIndex="0" SelectedItem="{Binding ВыбранныйСотрудник}"/>
             <Label Content="Кабинет: " FontSize="14" ToolTip="Выберите кабинет из списка, для просмотра техники, которая находится в нем."/>
             <ComboBox x:Name="cmbCabSearch" Width="105" Height="25" SelectionChanged="cmbCabSearch_SelectionChanged"
-                      SelectedValue=""/>
+                      ItemsSource="{Binding Mode=OneWay, Source={StaticResource allcabs}}"
+                      ItemTemplate="{DynamicResource cabinetTemplate}" SelectedItem="{Binding ВыбранныйКабинет}" SelectedIndex="0"/>
             <CheckBox Grid.ColumnSpan="2" Grid.Row="1" x:Name="CheckedRunning" VerticalAlignment="Center" HorizontalAlignment="Right" 
                   Content="Эксплуатация" Margin="40 0" IsChecked="{Binding ЕслиЭксплуатация}" Width="100" Click="CheckRunning_Click"/>
         </StackPanel>
         <DataGrid Name="ResponsobilityGrid" CanUserAddRows="False" IsReadOnly="True"
                   SelectionMode="Single" AutoGenerateColumns="False" Grid.Row="2"
                   ItemsSource="{Binding Mode=OneWay, Source={StaticResource filteremployee}}"
-                  SelectedItem="{Binding SelectedEquipment}"
+                  SelectedItem="{Binding SelectedEquipment}" MouseDoubleClick="ResponsobilityGrid_MouseDoubleClick"
                   Grid.ColumnSpan="3" RowBackground="Beige" AlternatingRowBackground="DarkSeaGreen" VirtualizingPanel.IsVirtualizing="False">
             <FrameworkElement.Style>
                 <Style TargetType="FrameworkElement">
@@ -74,14 +87,14 @@
                 <DataGridTextColumn Header="Техника" Binding="{Binding Техника.Название}" Width="*"/>
                 <DataGridTextColumn Header="Параметры" Binding="{Binding Техника.Параметры}" Width="*"/>
                 <DataGridTextColumn Header="ФИО Cотрудника" Binding="{Binding Сотрудник.ФИО_сотр}" Width="*"/>
-                <DataGridTextColumn Header="Место-ие (кабинет)" Binding="{Binding Кабинет}" Width="*"/>
+                <DataGridTextColumn Header="Кабинет" Binding="{Binding Кабинет}" Width="*"/>
                 <DataGridTextColumn Header="Дата выдачи" Binding="{Binding Дата_выдачи, StringFormat={}{0:dd.MM.yyyy}}" Width="95"/>
                 <DataGridTextColumn Header="Дата окончания" Binding="{Binding Дата_окончания, StringFormat={}{0:dd.MM.yyyy}}" Width="95"/>
                 <DataGridTextColumn Header="Дата обслуживания" Binding="{Binding Дата_обслуживания, StringFormat={}{0:dd.MM.yyyy}}" Width="95"/>
                 <DataGridTextColumn Header="Эксплуатация" Binding="{Binding Эксплуатация, Converter={x:Static local:BoolToYesNoConverter.Instance}}" Width="75"/>
             </DataGrid.Columns>
         </DataGrid>
-        <GroupBox x:Name="MenuGroupBox" Grid.Column="4" Header="Режим" HorizontalAlignment="Left" Height="555" Margin="5.333,0,0,-49"
+        <GroupBox x:Name="MenuGroupBox" Grid.Column="4" HorizontalAlignment="Left" Height="595" Margin="5.333,0,0,-49"
                   Grid.Row="2" VerticalAlignment="Top" Width="285" Background="#FFEEEAEA">
             <FrameworkElement.Visibility>
                 <MultiBinding Converter="{local:ModeToVisibilityMaterialLiability}">
@@ -127,7 +140,20 @@
                 <Label Content="Техника" FontWeight="DemiBold" FontFamily="Times New Roman" FontSize="16"/>
                 <ComboBox x:Name="Techcmb" SelectedValue="{Binding Path=Код_техники}" SelectedValuePath="Код"
                           ItemsSource="{Binding Техники, Mode=OneWay, Source={StaticResource vm}}"
-                          DisplayMemberPath="Название" SelectedItem="{Binding Техника}"/>
+                          DisplayMemberPath="Название" SelectedItem="{Binding Техника}">
+                    <FrameworkElement.Resources>
+                        <CollectionViewSource Source="{Binding Техники, Mode=OneWay, Source={StaticResource vm}}"
+                                              x:Key="filternonempty"
+                                              IsLiveFilteringRequested="True"
+                                              Filter="FilterNonEmpty">
+                            <CollectionViewSource.LiveFilteringProperties>
+                                <sys:String>Код_техники</sys:String>
+                            </CollectionViewSource.LiveFilteringProperties>
+                        </CollectionViewSource>
+                    </FrameworkElement.Resources>
+                </ComboBox>
+                <Label Content="Параметры" FontWeight="DemiBold" FontFamily="Times New Roman" FontSize="16"/>
+                <TextBox x:Name="Params" Text="{Binding Техника.Параметры}" IsEnabled="False"/>
                 <Label Content="ФИО сотрудника" FontWeight="DemiBold" FontFamily="Times New Roman" FontSize="16"/>
                 <ComboBox x:Name="Employeecmb" SelectedValue="{Binding Код_сотр}"
                           ItemsSource="{Binding Сотрудники, Mode=OneWay, Source={StaticResource vm}}" SelectedItem="{Binding Сотрудник}"

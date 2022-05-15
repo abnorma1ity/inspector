@@ -129,8 +129,9 @@ namespace Inspector.Pages
                 }
                 MessageBox.Show("Новый сотрудник успешно добавлен!");
                 ViewModel.Equipments.Add(ViewModel.EditableEquipment);
+                ViewModel.Mode = ViewMode.View;
             }
-            else if (ViewModel.Mode == ViewMode.Edit) // не работает
+            else if (ViewModel.Mode == ViewMode.Edit)
             {
                 using (dbMalukovEntities db = new dbMalukovEntities())
                 {
@@ -157,6 +158,7 @@ namespace Inspector.Pages
                     }
                 }
                 ViewModel.EditableEquipment = null;
+                ViewModel.Mode = ViewMode.View;
             }
         }
 
@@ -198,6 +200,23 @@ namespace Inspector.Pages
             db.SaveChanges();
             EmployeesGrid.ItemsSource = db.Сотрудник.ToList();
             MessageBox.Show("Удаление успешно");
+        }
+
+        private void EmployeesGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ViewModel.Mode = ViewMode.Edit;
+            BtnMode.Content = "Редактировать";
+            ViewModel.EditableEquipment = new Сотрудник()
+            {
+                Код_сотр = ViewModel.SelectedEquipment.Код_сотр,
+                ФИО_сотр = ViewModel.SelectedEquipment.ФИО_сотр,
+                Дата_рождения = ViewModel.SelectedEquipment.Дата_рождения,
+                Номер_кабинета = ViewModel.SelectedEquipment.Номер_кабинета,
+                Код_подразделения = ViewModel.SelectedEquipment.Код_подразделения,
+                Код_должности = ViewModel.SelectedEquipment.Код_должности,
+                Номер_телефона = ViewModel.SelectedEquipment.Номер_телефона,
+                //Выдача = ViewModel.SelectedEquipment.Выдача
+            };
         }
     }
 }
