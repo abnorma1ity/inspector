@@ -88,26 +88,35 @@ namespace Inspector.Pages
             };
         }
 
-        private void BtnMode_Click(object sender, RoutedEventArgs e) // кнопка изменения режима (добавить или рещдактировать)
+        private void BtnMode_Click(object sender, RoutedEventArgs e) // switcher
         {
-            if (ViewModel.Mode == ViewMode.Add)
+            if (ViewModel.Mode == ViewMode.Add) // add
             {
-                using (dbMalukovEntities db = new dbMalukovEntities())
+                if (!string.IsNullOrEmpty(NameTxb.Text) && !string.IsNullOrEmpty(PriceTxb.Text)
+                    && !string.IsNullOrEmpty(ModelTxb.Text) && !string.IsNullOrEmpty(ParamsTxb.Text) && !string.IsNullOrEmpty(InventoryNumberTxb.Text))
                 {
-                    var equipment = db.Техника.FirstOrDefault(eq => eq.Инвентарный_номер == ViewModel.EditableEquipment.Инвентарный_номер);
-                    if (equipment != null)
+                    using (dbMalukovEntities db = new dbMalukovEntities())
                     {
-                        MessageBox.Show("Данный инвентарный номер уже используется");
-                        return;
+                        var equipment = db.Техника.FirstOrDefault(eq => eq.Инвентарный_номер == ViewModel.EditableEquipment.Инвентарный_номер);
+                        if (equipment != null)
+                        {
+                            MessageBox.Show("Данный инвентарный номер уже используется");
+                            return;
+                        }
+                        db.Техника.Add(ViewModel.EditableEquipment);
+                        db.SaveChanges();
                     }
-                    db.Техника.Add(ViewModel.EditableEquipment);
-                    db.SaveChanges();
+                    MessageBox.Show("Новая техника зарегистрирована на складе!");
+                    ViewModel.Equipments.Add(ViewModel.EditableEquipment);
+                    ViewModel.Mode = ViewMode.View;
                 }
-                MessageBox.Show("Новая техника зарегистрирована на складе!");
-                ViewModel.Equipments.Add(ViewModel.EditableEquipment);
-                ViewModel.Mode = ViewMode.View;
+                else
+                {
+                    MessageBox.Show("Не заполнены поля: Название, Цена, Модель, Параметры, Инвентарный номер", 
+                        "Внимание", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
-            else if (ViewModel.Mode == ViewMode.Edit)
+            else if (ViewModel.Mode == ViewMode.Edit) // edit
             {
                 using (dbMalukovEntities db = new dbMalukovEntities())
                 {

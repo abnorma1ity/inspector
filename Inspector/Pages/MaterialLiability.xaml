@@ -57,12 +57,12 @@
                       ItemsSource="{Binding Mode=OneWay, Source={StaticResource allepm}}"
                       DisplayMemberPath="ФИО_сотр"
                       SelectedValuePath="Код_сотр" SelectedIndex="0" SelectedItem="{Binding ВыбранныйСотрудник}"/>
-            <Label Content="Кабинет: " FontSize="14" ToolTip="Выберите кабинет из списка, для просмотра техники, которая находится в нем."/>
+            <Label Margin="10 0 0 0" Content="Кабинет: " FontSize="14" ToolTip="Выберите кабинет из списка, для просмотра техники, которая находится в нем."/>
             <ComboBox x:Name="cmbCabSearch" Width="105" Height="25" SelectionChanged="cmbCabSearch_SelectionChanged"
                       ItemsSource="{Binding Mode=OneWay, Source={StaticResource allcabs}}"
                       ItemTemplate="{DynamicResource cabinetTemplate}" SelectedItem="{Binding ВыбранныйКабинет}" SelectedIndex="0"/>
             <CheckBox Grid.ColumnSpan="2" Grid.Row="1" x:Name="CheckedRunning" VerticalAlignment="Center" HorizontalAlignment="Right" 
-                  Content="Эксплуатация" Margin="40 0" IsChecked="{Binding ЕслиЭксплуатация}" Width="100" Click="CheckRunning_Click"/>
+                  Content="Эксплуатация" Margin="35 0" IsChecked="{Binding ЕслиЭксплуатация}" Width="100" Click="CheckRunning_Click"/>
         </StackPanel>
         <DataGrid Name="ResponsobilityGrid" CanUserAddRows="False" IsReadOnly="True"
                   SelectionMode="Single" AutoGenerateColumns="False" Grid.Row="2"

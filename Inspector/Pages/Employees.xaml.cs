@@ -122,8 +122,8 @@ namespace Inspector.Pages
         {
             if (ViewModel.Mode == ViewMode.Add) // add
             {
-                if (!string.IsNullOrEmpty(Cabinetcmb.Text) || !string.IsNullOrEmpty(Divisioncmb.Text)
-                    || !string.IsNullOrEmpty(Jobcmb.Text) || !string.IsNullOrEmpty(NameTxb.Text))
+                if (!string.IsNullOrEmpty(Cabinetcmb.Text) && !string.IsNullOrEmpty(Divisioncmb.Text)
+                    && !string.IsNullOrEmpty(Jobcmb.Text) && !string.IsNullOrEmpty(NameTxb.Text))
                 {
                     using (dbMalukovEntities db = new dbMalukovEntities())
                     {
