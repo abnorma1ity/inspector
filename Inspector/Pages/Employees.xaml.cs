@@ -65,6 +65,7 @@ namespace Inspector.Pages
                 NameTxb.IsEnabled = false;
                 PhoneTxb.IsEnabled = false;
                 datapicker.IsEnabled = false;
+                Editable.IsEnabled = false;
 
             }
         }

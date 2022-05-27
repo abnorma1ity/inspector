@@ -20,7 +20,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Menu VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="2">
-            <MenuItem Header="Правка">
+            <MenuItem Header="Правка" Name="Editable">
                 <MenuItem Header="Добавление записи" Click="ActivateGroupBoxAdd_Click" x:Name="ActivateGroupBoxAdd"/>
                 <MenuItem Header="Редактирование записи" Click="ActivateGroupBoxEdit_Click" x:Name="ActivateGroupBoxEdit"/>
                 <MenuItem Header="Удаление записи" Click="DeleteStringFromGrid_Click" x:Name="Delete"/>

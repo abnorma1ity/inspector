@@ -35,6 +35,8 @@ namespace Inspector.Pages
                 BtnCancel.IsEnabled = false;
                 ActivateGroupBoxAdd.IsEnabled = false;
                 ActivateGroupBoxEdit.IsEnabled = false;
+                WriteoffTech.IsEnabled = false;
+                Editable.IsEnabled = false;
                 var db = new dbMalukovEntities();
                 var user = db.Security.FirstOrDefault(f => f.id == AuthInfoAbout.Auth);
             }

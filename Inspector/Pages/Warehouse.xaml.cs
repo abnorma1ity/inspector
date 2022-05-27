@@ -49,6 +49,7 @@ namespace Inspector.Pages
                 InventoryNumberTxb.IsEnabled = false;
                 PriceTxb.IsEnabled = false;
                 datapicker.IsEnabled = false;
+                Editable.IsEnabled = false;
                 var user = db.Security.FirstOrDefault(f => f.id == AuthInfoAbout.Auth);
             }
         }
