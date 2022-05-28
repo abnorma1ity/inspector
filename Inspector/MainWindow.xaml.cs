@@ -148,5 +148,11 @@ namespace Inspector
                 AuthInfoAboutqq.Text = $"Вход выполнен как: {user.description}";
             else AuthInfoAboutqq.Text = $"Вход выполнен как: {user.description}";
         }
+
+        private void WriteoffClick(object sender, RoutedEventArgs e)
+        {
+            var page = new Writeoff();
+            MainFrame.Navigate(page);
+        }
     }
 }

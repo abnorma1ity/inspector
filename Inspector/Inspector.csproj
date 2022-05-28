@@ -104,6 +104,9 @@
     <Compile Include="Security.cs">
       <DependentUpon>InspectorModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Writeoff.xaml.cs">
+      <DependentUpon>Writeoff.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Выдача.cs">
       <DependentUpon>InspectorModel.tt</DependentUpon>
     </Compile>
@@ -166,6 +169,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\Warehouse.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Writeoff.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

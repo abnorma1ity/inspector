@@ -42,7 +42,7 @@
         </StackPanel>
         <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0 0 0 30">
             <Button x:Name="btnInput" Content="Войти" Click="btnInput_Click" Width="100" Height="20"/>
-            <Button x:Name="btnClose" Content="Закрыть" Click="btnClose_Click" Width="100" Height="20"/>
+            <Button x:Name="btnClose" Content="Выход" Click="btnClose_Click" Width="100" Height="20"/>
         </StackPanel>
         <!--<StackPanel HorizontalAlignment="Left" Grid.Row="1">
             <TextBlock Text="Логин"/>

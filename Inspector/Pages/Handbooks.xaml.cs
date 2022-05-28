@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static Inspector.Pages.ExcelHelper;
 
 namespace Inspector.Pages
 {
@@ -74,7 +75,12 @@ namespace Inspector.Pages
 
         private void Export_Click(object sender, RoutedEventArgs e)
         {
-
+            if (firstheader.IsSelected)
+                DataGridToSheet("Кабинеты", CabinetGrid);
+            if (thirdheader.IsSelected)
+                DataGridToSheet("Подразделения", DivisionGrid);
+            if (secondheader.IsSelected)
+                DataGridToSheet("Должности", JobGrid);
         }
         private void ResetOut()
         {

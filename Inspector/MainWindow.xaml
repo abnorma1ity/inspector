@@ -27,6 +27,7 @@
             <Button Content="Материальная ответственность" Click="MaterialLiabilityOpen"/>
             <Button Content="Сотрудники" Click="EmployeesOpen"/>
             <Button Content="Справочники" Click="SpravsClick"/>
+            <Button Content="Списания" Click="WriteoffClick"/>
         </StackPanel>
         <Frame Grid.RowSpan="3" Grid.Row="1" Grid.Column="1" Background="WhiteSmoke" Name="MainFrame"/>
         <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" Visibility="Hidden">
