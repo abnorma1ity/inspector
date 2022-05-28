@@ -58,6 +58,16 @@
                     </Style.Triggers>
                 </Style>
             </FrameworkElement.Style>
+            <DataGrid.ItemContainerStyle>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Foreground" Value="Red"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Код_списания}" Value="{x:Null}">
+                            <Setter Property="Foreground" Value="Black"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.ItemContainerStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Код" Binding="{Binding Код}" Width="50"/>
                 <DataGridTextColumn Header="Инвентарный номер" Binding="{Binding Инвентарный_номер}" Width="150"/>

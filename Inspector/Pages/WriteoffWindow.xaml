@@ -1,0 +1,51 @@
+﻿<Window x:Class="Inspector.WriteoffWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Inspector"
+        mc:Ignorable="d"
+        Height="155" Width="350" ResizeMode="NoResize" Icon="/Icon/empty.png" WindowStartupLocation="CenterScreen" >
+    <d:Window.DataContext>
+        <local:Техника  Код="123" Название="HP Notebook" Модель="123" Параметры="Ryzen 5 3600"/>
+    </d:Window.DataContext>
+    <Window.Background>
+        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="White" Offset="0"/>
+            <GradientStop Color="#FFB1B2B4" Offset="0.534"/>
+            <GradientStop Color="#FFC7C7C7" Offset="1"/>
+        </LinearGradientBrush>
+    </Window.Background>
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#FFE4EAFF"/>
+
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Foreground" Value="Brown"/>
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Height="20" VerticalAlignment="Top">
+        <TextBlock FontFamily="Georgia" FontSize="14">Списать технику:</TextBlock>
+            <TextBlock FontFamily="Georgia" FontSize="14" Text= "{Binding Название}" Margin="4 0 4 0"/>
+            <TextBlock FontFamily="Georgia" FontSize="14" Text= "{Binding Модель}"  Margin="4 0 4 0"/>
+        </StackPanel>
+    <StackPanel Grid.Row="1">
+            <TextBlock FontFamily="Georgia" FontSize="14" Text="Введите причину списания:" HorizontalAlignment="Left"/>
+            <TextBox FontFamily="Georgia" FontSize="14" x:Name="writeoffTxb" MinHeight="20" TextWrapping="Wrap"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <Button FontFamily="Georgia" FontSize="14" Content="Списать" Click="OnWriteoffClick" Width="145" Margin="10 0 20 0"/>
+            <Button FontFamily="Georgia" FontSize="14" Content="Отмена" Click="OnCancel" Width="145"/>
+        </StackPanel>
+    </Grid>
+</Window>

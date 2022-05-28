@@ -230,10 +230,13 @@ namespace Inspector.Pages
                 {
                     return;
                 }
+
+                (bool? result, string text) = WriteoffWindow.Show(ViewModel.SelectedEquipment.Техника);
+                if (result != true) return;
                 Списание writeoff = new Списание()
                 {
                     Дата_списания = System.DateTime.Now,
-                    Причина = "11",
+                    Причина = text,
                     ФИО_сотр = ViewModel.SelectedEquipment.Сотрудник.ФИО_сотр,
                 };
                 DB.Connection.Списание.Add(writeoff);
@@ -255,6 +258,7 @@ namespace Inspector.Pages
                     }
                 }
                 ViewModel.Выдачи.Remove(ViewModel.SelectedEquipment);
+                MessageBox.Show("Техника списана успешно", "Внимание", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch
             {

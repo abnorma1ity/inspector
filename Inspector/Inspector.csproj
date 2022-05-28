@@ -107,6 +107,9 @@
     <Compile Include="Pages\Writeoff.xaml.cs">
       <DependentUpon>Writeoff.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\WriteoffWindow.xaml.cs">
+      <DependentUpon>WriteoffWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Выдача.cs">
       <DependentUpon>InspectorModel.tt</DependentUpon>
     </Compile>
@@ -176,6 +179,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\WriteoffWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -222,6 +229,7 @@
     <Resource Include="Icon\telegram.png" />
     <Resource Include="Icon\logo.png" />
     <Resource Include="Icon\cpu.png" />
+    <Resource Include="Icon\empty.png" />
     <Content Include="InspectorModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>InspectorModel.Context.cs</LastGenOutput>
