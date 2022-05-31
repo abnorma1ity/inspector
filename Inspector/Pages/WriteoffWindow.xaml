@@ -44,7 +44,7 @@
             <TextBox FontFamily="Georgia" FontSize="14" x:Name="writeoffTxb" MinHeight="20" TextWrapping="Wrap"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Left">
-            <Button FontFamily="Georgia" FontSize="14" Content="Списать" Click="OnWriteoffClick" Width="145" Margin="10 0 20 0"/>
+            <Button FontFamily="Georgia" FontSize="14" Content="OK" Click="OnWriteoffClick" Width="145" Margin="10 0 20 0"/>
             <Button FontFamily="Georgia" FontSize="14" Content="Отмена" Click="OnCancel" Width="145"/>
         </StackPanel>
     </Grid>

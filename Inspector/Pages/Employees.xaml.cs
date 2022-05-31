@@ -212,18 +212,21 @@ namespace Inspector.Pages
 
         private void EmployeesGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            ViewModel.Mode = ViewMode.Edit;
-            BtnMode.Content = "Редактировать";
-            ViewModel.EditableEquipment = new Сотрудник()
+            if (AuthInfoAbout.Auth == 1)
             {
-                Код_сотр = ViewModel.SelectedEquipment.Код_сотр,
-                ФИО_сотр = ViewModel.SelectedEquipment.ФИО_сотр,
-                Дата_рождения = ViewModel.SelectedEquipment.Дата_рождения,
-                Номер_кабинета = ViewModel.SelectedEquipment.Номер_кабинета,
-                Код_подразделения = ViewModel.SelectedEquipment.Код_подразделения,
-                Код_должности = ViewModel.SelectedEquipment.Код_должности,
-                Номер_телефона = ViewModel.SelectedEquipment.Номер_телефона
-            };
+                ViewModel.Mode = ViewMode.Edit;
+                BtnMode.Content = "Редактировать";
+                ViewModel.EditableEquipment = new Сотрудник()
+                {
+                    Код_сотр = ViewModel.SelectedEquipment.Код_сотр,
+                    ФИО_сотр = ViewModel.SelectedEquipment.ФИО_сотр,
+                    Дата_рождения = ViewModel.SelectedEquipment.Дата_рождения,
+                    Номер_кабинета = ViewModel.SelectedEquipment.Номер_кабинета,
+                    Код_подразделения = ViewModel.SelectedEquipment.Код_подразделения,
+                    Код_должности = ViewModel.SelectedEquipment.Код_должности,
+                    Номер_телефона = ViewModel.SelectedEquipment.Номер_телефона
+                };
+            }
         }
     }
 }

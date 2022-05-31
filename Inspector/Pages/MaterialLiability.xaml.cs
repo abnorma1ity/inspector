@@ -201,21 +201,24 @@ namespace Inspector.Pages
 
         private void ResponsobilityGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            ViewModel.Mode = ViewMode.Edit;
-            BtnMode.Content = "Редактировать";
-            ViewModel.РедактируемаяВыдача = new Выдача()
+            if (AuthInfoAbout.Auth == 1)
             {
-                Код_сотр = ViewModel.SelectedEquipment.Код_сотр,
-                Код_техники = ViewModel.SelectedEquipment.Код_техники,
-                Дата_выдачи = ViewModel.SelectedEquipment.Дата_выдачи,
-                Дата_окончания = ViewModel.SelectedEquipment.Дата_окончания,
-                Дата_обслуживания = ViewModel.SelectedEquipment.Дата_обслуживания,
-                Кабинет = ViewModel.SelectedEquipment.Кабинет,
-                Эксплуатация = ViewModel.SelectedEquipment.Эксплуатация,
-                ID = ViewModel.SelectedEquipment.ID,
-                Сотрудник = ViewModel.SelectedEquipment.Сотрудник,
-                Техника = ViewModel.SelectedEquipment.Техника
-            };
+                ViewModel.Mode = ViewMode.Edit;
+                BtnMode.Content = "Редактировать";
+                ViewModel.РедактируемаяВыдача = new Выдача()
+                {
+                    Код_сотр = ViewModel.SelectedEquipment.Код_сотр,
+                    Код_техники = ViewModel.SelectedEquipment.Код_техники,
+                    Дата_выдачи = ViewModel.SelectedEquipment.Дата_выдачи,
+                    Дата_окончания = ViewModel.SelectedEquipment.Дата_окончания,
+                    Дата_обслуживания = ViewModel.SelectedEquipment.Дата_обслуживания,
+                    Кабинет = ViewModel.SelectedEquipment.Кабинет,
+                    Эксплуатация = ViewModel.SelectedEquipment.Эксплуатация,
+                    ID = ViewModel.SelectedEquipment.ID,
+                    Сотрудник = ViewModel.SelectedEquipment.Сотрудник,
+                    Техника = ViewModel.SelectedEquipment.Техника
+                };
+            }
         }
         private void FilterNonEmpty(object sender, FilterEventArgs e) // filter nonEmpty
         {

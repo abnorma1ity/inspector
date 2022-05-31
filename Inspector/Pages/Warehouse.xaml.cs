@@ -226,18 +226,22 @@ namespace Inspector.Pages
 
         private void WarehouseGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            ViewModel.Mode = ViewMode.Edit;
-            BtnMode.Content = "Редактировать";
-            ViewModel.EditableEquipment = new Техника()
+            if (AuthInfoAbout.Auth == 1)
             {
-                Название = ViewModel.SelectedEquipment.Название,
-                Модель = ViewModel.SelectedEquipment.Модель,
-                Параметры = ViewModel.SelectedEquipment.Параметры,
-                Цена = ViewModel.SelectedEquipment.Цена,
-                Дата_последнего_обновления = ViewModel.SelectedEquipment.Дата_последнего_обновления,
-                Инвентарный_номер = ViewModel.SelectedEquipment.Инвентарный_номер,
-                Код = ViewModel.SelectedEquipment.Код,
-            };
+                ViewModel.Mode = ViewMode.Edit;
+                BtnMode.Content = "Редактировать";
+                ViewModel.EditableEquipment = new Техника()
+                {
+                    Название = ViewModel.SelectedEquipment.Название,
+                    Модель = ViewModel.SelectedEquipment.Модель,
+                    Параметры = ViewModel.SelectedEquipment.Параметры,
+                    Цена = ViewModel.SelectedEquipment.Цена,
+                    Дата_последнего_обновления = ViewModel.SelectedEquipment.Дата_последнего_обновления,
+                    Инвентарный_номер = ViewModel.SelectedEquipment.Инвентарный_номер,
+                    Код = ViewModel.SelectedEquipment.Код,
+                };
+            }
+            else { }
         }
     }
 }
