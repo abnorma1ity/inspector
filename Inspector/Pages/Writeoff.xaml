@@ -29,7 +29,9 @@
                         SelectionMode="Single" AutoGenerateColumns="False"
                               RowBackground="Beige" AlternatingRowBackground="DarkSeaGreen" CanUserResizeColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Код" Binding="{Binding Код}" Width="*"/>
+                <DataGridTextColumn Header="Техника" Binding="{Binding Техника[0].Название}" Width="*"/>
+                <DataGridTextColumn Header="Модель" Binding="{Binding Техника[0].Модель}" Width="*"/>
+                <DataGridTextColumn Header="Код техники" Binding="{Binding Код}" Width="*"/>
                 <DataGridTextColumn Header="ФИО сотрудника" Binding="{Binding ФИО_сотр}" Width="*"/>
                 <DataGridTextColumn Header="Причина списания" Binding="{Binding Причина}" Width="*"/>
                 <DataGridTextColumn Header="Дата списания" Binding="{Binding Дата_списания, StringFormat={}{0:dd.MM.yyyy}}" Width="*"/>

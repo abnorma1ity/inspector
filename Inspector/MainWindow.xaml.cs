@@ -35,24 +35,19 @@ namespace Inspector
             var user = db.Security.FirstOrDefault(f => f.id == AuthInfoAbout.Auth);
         }
 
-        private void ExitMenu_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
-
-        private void WarehouseOpen(object sender, RoutedEventArgs e)
+        private void WarehouseOpen(object sender, RoutedEventArgs e) // открыть страницу Склад
         {
             var page = new Warehouse();
             MainFrame.Navigate(page);
         }
 
-        private void MaterialLiabilityOpen(object sender, RoutedEventArgs e)
+        private void MaterialLiabilityOpen(object sender, RoutedEventArgs e) // открыть страницу Мат. ответственность
         {
             var page = new MaterialLiability();
             MainFrame.Navigate(page);
         }
 
-        private void SpravsClick(object sender, RoutedEventArgs e)
+        private void SpravsClick(object sender, RoutedEventArgs e) // открыть страницу Справочники
         {
             var page = new Handbooks();
             MainFrame.Navigate(page);
@@ -134,13 +129,13 @@ namespace Inspector
             vk.BeginAnimation(Label.WidthProperty, HeightAnimation);
         }
 
-        private void EmployeesOpen(object sender, RoutedEventArgs e)
+        private void EmployeesOpen(object sender, RoutedEventArgs e) // открыть страницу Сотрудники
         {
             var page = new Employees();
             MainFrame.Navigate(page);
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void Window_Loaded(object sender, RoutedEventArgs e) // действия при загрузке
         {
             var db = new dbMalukovEntities();
             var user = db.Security.FirstOrDefault(f => f.id == AuthInfoAbout.Auth);
@@ -149,7 +144,7 @@ namespace Inspector
             else AuthInfoAboutqq.Text = $"Вход выполнен как: {user.description}";
         }
 
-        private void WriteoffClick(object sender, RoutedEventArgs e)
+        private void WriteoffClick(object sender, RoutedEventArgs e) // открыть страницу Списание
         {
             var page = new Writeoff();
             MainFrame.Navigate(page);

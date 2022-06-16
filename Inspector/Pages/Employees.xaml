@@ -21,9 +21,9 @@
         </Grid.RowDefinitions>
         <Menu VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="2">
             <MenuItem Header="Правка" Name="Editable">
-                <MenuItem Header="Добавление записи" Click="ActivateGroupBoxAdd_Click" x:Name="ActivateGroupBoxAdd"/>
-                <MenuItem Header="Редактирование записи" Click="ActivateGroupBoxEdit_Click" x:Name="ActivateGroupBoxEdit"/>
-                <MenuItem Header="Удаление записи" Click="DeleteStringFromGrid_Click" x:Name="Delete"/>
+                <MenuItem Header="Добавить" Click="ActivateGroupBoxAdd_Click" x:Name="ActivateGroupBoxAdd"/>
+                <MenuItem Header="Редактировать" Click="ActivateGroupBoxEdit_Click" x:Name="ActivateGroupBoxEdit"/>
+                <MenuItem Header="Удалить" Click="DeleteStringFromGrid_Click" x:Name="Delete"/>
             </MenuItem>
             <MenuItem Header="Экспорт в Excel" Click="Export_Click"/>
         </Menu>

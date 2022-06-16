@@ -26,12 +26,12 @@ namespace Inspector
             InitializeComponent();
         }
 
-        private void btnClose_Click(object sender, RoutedEventArgs e)
+        private void btnClose_Click(object sender, RoutedEventArgs e) // кнопка закрыть
         {
             this.Close();
         }
 
-        private void btnInput_Click(object sender, RoutedEventArgs e)
+        private void btnInput_Click(object sender, RoutedEventArgs e) // действия на кнопку Войти
         {
             string strForm2Text = TextLogin.Text;
             string strPassword = TextPasw.Password;

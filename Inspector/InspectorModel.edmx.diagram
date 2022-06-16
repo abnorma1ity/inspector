@@ -4,20 +4,20 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="2e3ab540482a422dba91ca7bfff3ef1f" Name="Diagram1" ZoomLevel="86">
-        <EntityTypeShape EntityType="dbMalukovModel.Выдача" Width="1.5" PointX="5.25" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbMalukovModel.Должность" Width="1.5" PointX="0.75" PointY="2" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbMalukovModel.Кабинет" Width="1.5" PointX="0.75" PointY="5.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbMalukovModel.Подразделение" Width="1.5" PointX="0.75" PointY="7.5" IsExpanded="true" />
+      <Diagram DiagramId="2e3ab540482a422dba91ca7bfff3ef1f" Name="Diagram1" ZoomLevel="110">
+        <EntityTypeShape EntityType="dbMalukovModel.Выдача" Width="1.5" PointX="5" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbMalukovModel.Должность" Width="1.5" PointX="1.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbMalukovModel.Кабинет" Width="1.5" PointX="1.25" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbMalukovModel.Подразделение" Width="1.5" PointX="1.25" PointY="4.5" IsExpanded="true" />
         <EntityTypeShape EntityType="dbMalukovModel.Сотрудник" Width="1.5" PointX="3.125" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbMalukovModel.Техника" Width="1.5" PointX="4.125" PointY="5.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbMalukovModel.Списание" Width="1.5" PointX="7.75" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbMalukovModel.Техника" Width="1.5" PointX="3.125" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbMalukovModel.Списание" Width="1.5" PointX="5.875" PointY="4.375" IsExpanded="true" />
         <AssociationConnector Association="dbMalukovModel.FK_Выдача_Сотрудник" ManuallyRouted="false" />
         <AssociationConnector Association="dbMalukovModel.FK_Выдача_Техника" ManuallyRouted="false" />
         <AssociationConnector Association="dbMalukovModel.FK_Сотрудник_Должность" ManuallyRouted="false" />
         <AssociationConnector Association="dbMalukovModel.FK_Сотрудник_Кабинет" ManuallyRouted="false" />
         <AssociationConnector Association="dbMalukovModel.FK_Сотрудник_Подразделение" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="dbMalukovModel.Security" Width="1.5" PointX="7.625" PointY="1.125" />
+        <EntityTypeShape EntityType="dbMalukovModel.Security" Width="1.5" PointX="6.625" PointY="2.25" />
         <AssociationConnector Association="dbMalukovModel.FK_Техника_Списание" />
       </Diagram>
     </edmx:Diagrams>

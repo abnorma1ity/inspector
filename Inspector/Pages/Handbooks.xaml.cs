@@ -73,7 +73,7 @@ namespace Inspector.Pages
             }
         }
 
-        private void Export_Click(object sender, RoutedEventArgs e)
+        private void Export_Click(object sender, RoutedEventArgs e) // экспорт
         {
             if (firstheader.IsSelected)
                 DataGridToSheet("Кабинеты", CabinetGrid);
@@ -82,7 +82,7 @@ namespace Inspector.Pages
             if (secondheader.IsSelected)
                 DataGridToSheet("Должности", JobGrid);
         }
-        private void ResetOut()
+        private void ResetOut() // сброс фильтра
         {
             CabinetGrid.ItemsSource = DB.Connection.Кабинет.ToList();
             JobGrid.ItemsSource = DB.Connection.Должность.ToList();
@@ -91,7 +91,7 @@ namespace Inspector.Pages
             txbSearchSecond.Clear();
             txbSearchThird.Clear();
         }
-        private void txbSearchSecond_TextChanged(object sender, TextChangedEventArgs e) // 2
+        private void txbSearchSecond_TextChanged(object sender, TextChangedEventArgs e) // 2 поиск
         {
             var db = new dbMalukovEntities();
             var us = db.Должность.ToList();
@@ -107,7 +107,7 @@ namespace Inspector.Pages
             }
         }
 
-        private void txbSearch_TextChanged(object sender, TextChangedEventArgs e) // 1
+        private void txbSearch_TextChanged(object sender, TextChangedEventArgs e) // 1 поиск
         {
             var db = new dbMalukovEntities();
             var us = db.Кабинет.ToList();
@@ -123,7 +123,7 @@ namespace Inspector.Pages
             }
         }
 
-        private void txbSearchThird_TextChanged(object sender, TextChangedEventArgs e) // 3
+        private void txbSearchThird_TextChanged(object sender, TextChangedEventArgs e) // 3 поиск
         {
             var db = new dbMalukovEntities();
             var us = db.Подразделение.ToList();
@@ -138,15 +138,5 @@ namespace Inspector.Pages
                 ResetOut();
             }
         }
-
-        //private void deleteBtn_Click(object sender, RoutedEventArgs e)
-        //{
-        //    int Id = (CabinetGrid.SelectedItem as Кабинет).Номер_кабинета;
-        //    var deleteCabinet = db.Кабинет.Where(m => m.Номер_кабинета == Id).Single();
-        //    db.Кабинет.Remove(deleteCabinet);
-        //    db.SaveChanges();
-        //    CabinetGrid.ItemsSource = db.Кабинет.ToList();
-        //    MessageBox.Show("Удаление успешно");
-        //}
     }
 }

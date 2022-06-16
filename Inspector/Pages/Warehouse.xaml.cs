@@ -54,14 +54,14 @@ namespace Inspector.Pages
             }
         }
 
-        private void ResetOut()
+        private void ResetOut() // сброс фильтрации
         {
 
             WarehouseGrid.ItemsSource = DB.Connection.Техника.ToList();
             txbSearch.Clear();
         }
 
-        private void DeactiveGroupBox_Click(object sender, RoutedEventArgs e)
+        private void DeactiveGroupBox_Click(object sender, RoutedEventArgs e) // выход из режима редактирования или добавления
         {
             ViewModel.Mode = ViewMode.View;
         }
@@ -156,7 +156,7 @@ namespace Inspector.Pages
             }
         }
 
-        private void txbSearch_TextChanged(object sender, TextChangedEventArgs e)
+        private void txbSearch_TextChanged(object sender, TextChangedEventArgs e) // поиск
         {
             if (CheckStr.IsChecked == true)
             {
@@ -217,14 +217,19 @@ namespace Inspector.Pages
         private void DeleteStringFromGrid_Click(object sender, RoutedEventArgs e) // удаление
         {
             int Id = (WarehouseGrid.SelectedItem as Техника).Код;
+            var Indx = (WarehouseGrid.SelectedItem as Техника).Название;
+            var Index = (WarehouseGrid.SelectedItem as Техника).Модель;
             var deleteTech = db.Техника.Where(m => m.Код == Id).Single();
-            db.Техника.Remove(deleteTech);
-            db.SaveChanges();
-            WarehouseGrid.ItemsSource = db.Техника.ToList();
-            MessageBox.Show("Удаление успешно");
+            if (MessageBox.Show($"Удалить запись о технике: {Indx} {Index}?", "Подтверждение удаления", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+            {
+                db.Техника.Remove(deleteTech);
+                db.SaveChanges();
+                WarehouseGrid.ItemsSource = db.Техника.ToList();
+                MessageBox.Show("Удаление успешно");
+            }
         }
 
-        private void WarehouseGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void WarehouseGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e) // вход в режим редактирования
         {
             if (AuthInfoAbout.Auth == 1)
             {

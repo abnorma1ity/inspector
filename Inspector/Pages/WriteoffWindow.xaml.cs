@@ -25,19 +25,19 @@ namespace Inspector
         }
 
 
-        private void OnWriteoffClick(object sender, RoutedEventArgs e)
+        private void OnWriteoffClick(object sender, RoutedEventArgs e) // кнопка ок
         {
             DialogResult = true;
             Close();
         }
 
-        private void OnCancel(object sender, RoutedEventArgs e)
+        private void OnCancel(object sender, RoutedEventArgs e) // кнопка отмена
         {
             DialogResult = false;
             Close();
         }
 
-        public static (bool? result, string text) Show(Техника техника)
+        public static (bool? result, string text) Show(Техника техника) // логика для DialogResult
         {
             var wind = new WriteoffWindow
             {

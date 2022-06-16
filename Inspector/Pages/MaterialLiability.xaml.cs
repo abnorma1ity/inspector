@@ -158,12 +158,12 @@ namespace Inspector.Pages
             }
         }
 
-        private void DeactiveGroupBox_Click(object sender, RoutedEventArgs e)
+        private void DeactiveGroupBox_Click(object sender, RoutedEventArgs e) // выход из режима редактирования или добавления
         {
             ViewModel.Mode = ViewMode.View;
         }
 
-        private void OnFilterВыдачи(object sender, FilterEventArgs e)
+        private void OnFilterВыдачи(object sender, FilterEventArgs e) // filter
         {
             Выдача выдача = (Выдача)e.Item;
 
@@ -199,7 +199,7 @@ namespace Inspector.Pages
             filteremployee?.View.Refresh();
         }
 
-        private void ResponsobilityGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void ResponsobilityGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e) // вход в режим редактирования
         {
             if (AuthInfoAbout.Auth == 1)
             {
@@ -225,7 +225,7 @@ namespace Inspector.Pages
             Техника item = (Техника)e.Item;
             e.Accepted = item == null;
         }
-        private void WriteoffTech_Click(object sender, RoutedEventArgs e)
+        private void WriteoffTech_Click(object sender, RoutedEventArgs e) // списание
         {
             try
             {

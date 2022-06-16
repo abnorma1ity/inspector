@@ -10,7 +10,7 @@ namespace Inspector
 {
     class DB
     {
-        public static dbMalukovEntities Connection;
+        public static readonly dbMalukovEntities Connection;
 
         public static ObservableCollection<Техника> Техники { get; }
         public static ObservableCollection<Выдача> Выдачи { get; }

@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Excel = Microsoft.Office.Interop.Excel;
+using static Inspector.Pages.ExcelHelper;
 
 namespace Inspector.Pages
 {
@@ -70,39 +70,17 @@ namespace Inspector.Pages
             }
         }
 
-        private void Export_Click(object sender, RoutedEventArgs e)
+        private void Export_Click(object sender, RoutedEventArgs e) // экспорт
         {
-            var db = new dbMalukovEntities();
-            var application = new Excel.Application();
-            application.Visible = true;
-            Excel.Workbook workbook = application.Workbooks.Add(System.Reflection.Missing.Value);
-            Excel.Worksheet sheet1 = application.Worksheets.Item[1]; //Sheets[1];
-            sheet1.Name = "Сотрудники";
-
-            for (int j = 1; j < EmployeesGrid.Columns.Count + 1; j++)
-            {
-                Excel.Range myRange = (Excel.Range)sheet1.Cells[1, j];
-                //sheet1.Columns[j].ColumnWidth = 25;
-                myRange.Value2 = EmployeesGrid.Columns[j - 1].Header;
-                myRange.Font.Bold = true;
-                myRange.Columns.AutoFit();
-            }
-            for (int i = 1; i <= EmployeesGrid.Columns.Count; i++)
-                for (int j = 0; j < EmployeesGrid.Items.Count; j++)
-                {
-                    TextBlock b = EmployeesGrid.Columns[i - 1].GetCellContent(EmployeesGrid.Items[j]) as TextBlock;
-                    Microsoft.Office.Interop.Excel.Range myrange = (Microsoft.Office.Interop.Excel.Range)sheet1.Cells[j + 2, i];
-                    myrange.Value2 = b.Text;
-                }
+            DataGridToSheet("Сотрудники", EmployeesGrid);
         }
-        private void ResetOut()
+        private void ResetOut() // сброс фильтра
         {
-
             EmployeesGrid.ItemsSource = DB.Connection.Сотрудник.ToList();
             txbSearch.Clear();
         }
 
-        private void txbSearch_TextChanged(object sender, TextChangedEventArgs e)
+        private void txbSearch_TextChanged(object sender, TextChangedEventArgs e) // поиск
         {
             var db = new dbMalukovEntities();
             var us = db.Сотрудник.ToList();
@@ -170,20 +148,19 @@ namespace Inspector.Pages
                 ViewModel.Mode = ViewMode.View;
             }
         }
-
-        private void DeactiveGroupBox_Click(object sender, RoutedEventArgs e)
+        private void DeactiveGroupBox_Click(object sender, RoutedEventArgs e) // выход из режима редактирования или добавления
         {
             ViewModel.Mode = ViewMode.View;
         }
 
-        private void ActivateGroupBoxAdd_Click(object sender, RoutedEventArgs e)
+        private void ActivateGroupBoxAdd_Click(object sender, RoutedEventArgs e) // добавление
         {
             ViewModel.Mode = ViewMode.Add;
             BtnMode.Content = "Добавить";
             ViewModel.EditableEquipment = new Сотрудник();
         }
 
-        private void ActivateGroupBoxEdit_Click(object sender, RoutedEventArgs e) // добавление
+        private void ActivateGroupBoxEdit_Click(object sender, RoutedEventArgs e) // редактирование
         {
             ViewModel.Mode = ViewMode.Edit;
             BtnMode.Content = "Редактировать";
@@ -199,18 +176,22 @@ namespace Inspector.Pages
             };
         }
 
-        private void DeleteStringFromGrid_Click(object sender, RoutedEventArgs e)
+        private void DeleteStringFromGrid_Click(object sender, RoutedEventArgs e) // удаление
         {
             int Id = (EmployeesGrid.SelectedItem as Сотрудник).Код_сотр;
+            var Indx = (EmployeesGrid.SelectedItem as Сотрудник).ФИО_сотр;
             var db = new dbMalukovEntities();
-            var deleteEmployee = db.Сотрудник.Where(m => m.Код_сотр == Id).Single();
-            db.Сотрудник.Remove(deleteEmployee);
-            db.SaveChanges();
-            EmployeesGrid.ItemsSource = db.Сотрудник.ToList();
-            MessageBox.Show("Удаление успешно");
+            if (MessageBox.Show($"Вы уверены, что хотите удалить запись о сотруднике {Indx}?", "Подтверждение удаления", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+            {
+                var deleteEmployee = db.Сотрудник.Where(m => m.Код_сотр == Id).Single();
+                db.Сотрудник.Remove(deleteEmployee);
+                db.SaveChanges();
+                EmployeesGrid.ItemsSource = db.Сотрудник.ToList();
+                MessageBox.Show("Удаление успешно");
+            }
         }
 
-        private void EmployeesGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void EmployeesGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e) // вход в режим редактирования
         {
             if (AuthInfoAbout.Auth == 1)
             {

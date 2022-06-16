@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,9 +25,10 @@ namespace Inspector
         public Writeoff()
         {
             InitializeComponent();
-            var db = new dbMalukovEntities();
-            WriteoffGrid.ItemsSource = db.Списание.ToList();
-        }
+            var list = DB.Connection.Списание.Include(e => e.Техника).ToList();
+            list.ForEach(e => e.Техника = DB.Connection.Техника.Where(f => f.Код_списания == e.Код).ToList());
+            WriteoffGrid.ItemsSource = list;
+       }
 
         private void Export_Click(object sender, RoutedEventArgs e)
         {
@@ -39,8 +41,7 @@ namespace Inspector
         }
         private void txbSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
-            var db = new dbMalukovEntities();
-            var us = db.Списание.ToList();
+            var us = DB.Connection.Списание.ToList();
             IEnumerable<Списание> result = null;
             if (txbSearch.Text.Length > 0)
             {
