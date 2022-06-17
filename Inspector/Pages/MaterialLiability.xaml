@@ -162,7 +162,6 @@
                 <ComboBox x:Name="Cabinetcmb" SelectedValue="{Binding Кабинет}"
                           ItemsSource="{Binding Кабинеты, Mode=OneWay, Source={StaticResource vm}}"
                           SelectedValuePath="Номер_кабинета" DisplayMemberPath="Номер_кабинета"/>
-                <!--<TextBox x:Name="Cabinet" Text="{Binding Кабинет}"/>-->
                 <Label Content="Инвентарный номер" FontWeight="DemiBold" FontFamily="Times New Roman" FontSize="16"/>
                 <TextBox x:Name="Inventory" Text="{Binding Техника.Инвентарный_номер}">
                     <FrameworkElement.Style>
