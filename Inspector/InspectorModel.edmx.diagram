@@ -11,13 +11,13 @@
         <EntityTypeShape EntityType="dbMalukovModel.Подразделение" Width="1.5" PointX="1.25" PointY="4.5" IsExpanded="true" />
         <EntityTypeShape EntityType="dbMalukovModel.Сотрудник" Width="1.5" PointX="3.125" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="dbMalukovModel.Техника" Width="1.5" PointX="3.125" PointY="4.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbMalukovModel.Списание" Width="1.5" PointX="5.875" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbMalukovModel.Списание" Width="1.5" PointX="5" PointY="4.125" IsExpanded="true" />
         <AssociationConnector Association="dbMalukovModel.FK_Выдача_Сотрудник" ManuallyRouted="false" />
         <AssociationConnector Association="dbMalukovModel.FK_Выдача_Техника" ManuallyRouted="false" />
         <AssociationConnector Association="dbMalukovModel.FK_Сотрудник_Должность" ManuallyRouted="false" />
         <AssociationConnector Association="dbMalukovModel.FK_Сотрудник_Кабинет" ManuallyRouted="false" />
         <AssociationConnector Association="dbMalukovModel.FK_Сотрудник_Подразделение" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="dbMalukovModel.Security" Width="1.5" PointX="6.625" PointY="2.25" />
+        <EntityTypeShape EntityType="dbMalukovModel.Security" Width="1.5" PointX="8.25" PointY="2.125" />
         <AssociationConnector Association="dbMalukovModel.FK_Техника_Списание" />
       </Diagram>
     </edmx:Diagrams>

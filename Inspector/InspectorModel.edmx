@@ -29,7 +29,7 @@
           <Property Name="Дата_окончания" Type="date" />
           <Property Name="Дата_обслуживания" Type="date" />
           <Property Name="Эксплуатация" Type="bit" Nullable="false" />
-          <Property Name="Кабинет" Type="smallint" />
+          <Property Name="Кабинет" Type="int" />
         </EntityType>
         <EntityType Name="Должность">
           <Key>
@@ -188,7 +188,7 @@
           <NavigationProperty Name="Сотрудник" Relationship="Self.FK_Выдача_Сотрудник" FromRole="Выдача" ToRole="Сотрудник" />
           <NavigationProperty Name="Техника" Relationship="Self.FK_Выдача_Техника" FromRole="Выдача" ToRole="Техника" />
           <Property Name="Дата_обслуживания" Type="DateTime" Precision="0" />
-          <Property Name="Кабинет" Type="Int16" />
+          <Property Name="Кабинет" Type="Int32" />
         </EntityType>
         <EntityType Name="Должность">
           <Key>

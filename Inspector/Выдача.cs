@@ -21,7 +21,7 @@ namespace Inspector
         public Nullable<System.DateTime> Дата_окончания { get; set; }
         public bool Эксплуатация { get; set; }
         public Nullable<System.DateTime> Дата_обслуживания { get; set; }
-        public Nullable<short> Кабинет { get; set; }
+        public Nullable<int> Кабинет { get; set; }
     
         public virtual Сотрудник Сотрудник { get; set; }
         public virtual Техника Техника { get; set; }

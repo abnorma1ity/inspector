@@ -159,7 +159,10 @@
                           ItemsSource="{Binding Сотрудники, Mode=OneWay, Source={StaticResource vm}}" SelectedItem="{Binding Сотрудник}"
                           DisplayMemberPath="ФИО_сотр" SelectedValuePath="Код_сотр"/>
                 <Label Content="Кабинет" FontWeight="DemiBold" FontFamily="Times New Roman" FontSize="16"/>
-                <TextBox x:Name="Cabinet" Text="{Binding Кабинет}"/>
+                <ComboBox x:Name="Cabinetcmb" SelectedValue="{Binding Кабинет}"
+                          ItemsSource="{Binding Кабинеты, Mode=OneWay, Source={StaticResource vm}}"
+                          SelectedValuePath="Номер_кабинета" DisplayMemberPath="Номер_кабинета"/>
+                <!--<TextBox x:Name="Cabinet" Text="{Binding Кабинет}"/>-->
                 <Label Content="Инвентарный номер" FontWeight="DemiBold" FontFamily="Times New Roman" FontSize="16"/>
                 <TextBox x:Name="Inventory" Text="{Binding Техника.Инвентарный_номер}">
                     <FrameworkElement.Style>
@@ -175,11 +178,11 @@
                     </FrameworkElement.Style>
                 </TextBox>
                 <Label Content="Дата выдачи" FontWeight="DemiBold" FontFamily="Times New Roman" FontSize="16"/>
-                <DatePicker  x:Name="datapicker1" DisplayDate="{Binding Дата_выдачи, Mode=TwoWay}"/>
+                <DatePicker  x:Name="datapicker1" DisplayDate="{Binding Дата_выдачи, Mode=TwoWay}" SelectedDate="{Binding Дата_выдачи}"/>
                 <Label Content="Дата окончания" FontWeight="DemiBold" FontFamily="Times New Roman" FontSize="16"/>
-                <DatePicker  x:Name="datapicker2" DisplayDate="{Binding Дата_окончания, Mode=TwoWay}"/>
+                <DatePicker  x:Name="datapicker2" DisplayDate="{Binding Дата_окончания, Mode=TwoWay}" SelectedDate="{Binding Дата_окончания}"/>
                 <Label Content="Дата обслуживания" FontWeight="DemiBold" FontFamily="Times New Roman" FontSize="16"/>
-                <DatePicker  x:Name="datapicker3" DisplayDate="{Binding Дата_обслуживания, Mode=TwoWay}"/>
+                <DatePicker  x:Name="datapicker3" DisplayDate="{Binding Дата_обслуживания, Mode=TwoWay}" SelectedDate="{Binding Дата_обслуживания}"/>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Эксплуатация" FontWeight="DemiBold" FontFamily="Times New Roman" FontSize="16"/>
                     <CheckBox x:Name="CheckRunningcmb" IsChecked="{Binding Path=Эксплуатация}" VerticalAlignment="Center"/>

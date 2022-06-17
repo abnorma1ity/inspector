@@ -89,22 +89,29 @@ namespace Inspector.Pages
         {
             if (ViewModel.Mode == ViewMode.Add) // add
             {
-                if (!string.IsNullOrEmpty(Techcmb.Text) || !string.IsNullOrEmpty(Employeecmb.Text))
+                if (!string.IsNullOrEmpty(Techcmb.Text) || !string.IsNullOrEmpty(Employeecmb.Text) || !string.IsNullOrEmpty(Cabinetcmb.Text))
                 {
                     if (!string.IsNullOrEmpty(Techcmb.Text))
                     {
                         if (!string.IsNullOrEmpty(Employeecmb.Text))
                         {
-                            var equipment = DB.Выдачи.FirstOrDefault(eq => eq.Код_техники == ViewModel.РедактируемаяВыдача.Код_техники);
-                            if (equipment != null)
+                            if (!string.IsNullOrEmpty(Cabinetcmb.Text))
                             {
-                                DB.Выдачи.Remove(equipment);
+                                var equipment = DB.Выдачи.FirstOrDefault(eq => eq.Код_техники == ViewModel.РедактируемаяВыдача.Код_техники);
+                                if (equipment != null)
+                                {
+                                    DB.Выдачи.Remove(equipment);
+                                }
+                                DB.Connection.Выдача.Add(ViewModel.РедактируемаяВыдача);
+                                DB.Connection.SaveChanges();
+                                MessageBox.Show("Техника успешно выдана сотруднику!");
+                                ViewModel.Выдачи.Add(ViewModel.РедактируемаяВыдача);
+                                ViewModel.Mode = ViewMode.View;
                             }
-                            DB.Connection.Выдача.Add(ViewModel.РедактируемаяВыдача);
-                            DB.Connection.SaveChanges();
-                            MessageBox.Show("Техника успешно выдана сотруднику!");
-                            ViewModel.Выдачи.Add(ViewModel.РедактируемаяВыдача);
-                            ViewModel.Mode = ViewMode.View;
+                            else
+                            {
+                                MessageBox.Show("Не выбран кабинет для выдачи", "Внимание", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
                         }
                         else
                         {
@@ -118,7 +125,7 @@ namespace Inspector.Pages
                 }
                 else
                 {
-                    MessageBox.Show("Не выбрана техника или сотрудник для выдачи", "Внимание", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Не выбран(-а): кабинет, техника, сотрудник", "Внимание", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             else if (ViewModel.Mode == ViewMode.Edit) // edit

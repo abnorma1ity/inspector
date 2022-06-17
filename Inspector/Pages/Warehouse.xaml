@@ -144,7 +144,7 @@
                 <Label Content="Цена" FontWeight="DemiBold" FontFamily="Times New Roman" FontSize="16"/>
                 <TextBox x:Name="PriceTxb" Text="{Binding Цена}"/>
                 <Label Content="Дата последнего обновления" FontWeight="DemiBold" FontFamily="Times New Roman" FontSize="16" />
-                <DatePicker  x:Name="datapicker" DisplayDate="{Binding Дата_последнего_обновления, Mode=TwoWay}"/>
+                <DatePicker  x:Name="datapicker" DisplayDate="{Binding Дата_последнего_обновления, Mode=TwoWay}" SelectedDate="{Binding Дата_последнего_обновления}"/>
                 <StackPanel>
                     <FrameworkElement.Style>
                         <Style TargetType="FrameworkElement">
