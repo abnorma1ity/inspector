@@ -167,12 +167,6 @@
                     <FrameworkElement.Style>
                         <Style TargetType="TextBox">
                             <Setter Property="IsEnabled" Value="False"/>
-                            <!--<Style.Triggers>
-                                <DataTrigger Binding="{Binding Path=ViewModel.Mode, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Page}}"
-                                             Value="{x:Static local:ViewMode.Add}">
-                                    <Setter Property="IsEnabled" Value="True"/>
-                                </DataTrigger>
-                            </Style.Triggers>-->
                         </Style>
                     </FrameworkElement.Style>
                 </TextBox>
