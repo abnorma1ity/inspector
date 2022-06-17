@@ -31,7 +31,6 @@
         </Style>
     </Window.Resources>
     <Grid>
-        <!--<Image Source="\Icon\logo.png" Grid.Row="0" VerticalAlignment="Top"/>-->
         <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Top">
             <TextBlock Text="Логин" VerticalAlignment="Center" Width="42"/>
             <TextBox x:Name="TextLogin" Text="admin" Width="160" Height="20" VerticalAlignment="Center"/>
@@ -44,14 +43,6 @@
             <Button x:Name="btnInput" Content="Войти" Click="btnInput_Click" Width="100" Height="20"/>
             <Button x:Name="btnClose" Content="Выход" Click="btnClose_Click" Width="100" Height="20"/>
         </StackPanel>
-        <!--<StackPanel HorizontalAlignment="Left" Grid.Row="1">
-            <TextBlock Text="Логин"/>
-            <TextBox x:Name="TextLogin" Text="admin"/>
-            <TextBlock Text="Пароль"/>
-            <PasswordBox x:Name="TextPasw" Password="admin"/>
-            <Button x:Name="btnInput" Content="Войти" Click="btnInput_Click"/>
-            <Button x:Name="btnClose" Content="Закрыть" Click="btnClose_Click" />
-        </StackPanel>-->
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
