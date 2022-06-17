@@ -64,10 +64,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AuthInfoAbout.cs" />
+    <Compile Include="Common\AuthInfoAbout.cs" />
     <Compile Include="Common\BaseInpc.cs" />
     <Compile Include="Common\ViewModelBase.cs" />
-    <Compile Include="DB.cs" />
+    <Compile Include="Common\DB.cs" />
     <Compile Include="InspectorModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
